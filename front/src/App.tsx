@@ -9,12 +9,11 @@ import PublicLayout from './layout/PublicLayout.tsx';
 export default function App() {
   return (    
     <>
-    <PublicLayout />
-    <SearchAppBar />
-
-    <CssBaseline />
-
     <ThemeProvider theme={baseTheme}>
+      <PublicLayout />
+
+      <CssBaseline />
+
       <Outlet />
     </ThemeProvider>
     </>
