@@ -9,12 +9,12 @@ import SignUp from './pages/sign-up/SignUp.tsx';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-        <Route path="signin" element={<SignIn />} />
-        <Route path="signup" element={<SignUp />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<SignUp />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>     
   </React.StrictMode>,
 )

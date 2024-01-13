@@ -15,17 +15,19 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "./SignIn.css"
+import baseTheme from '../../theme.ts';
 
 const SignInTheme = createTheme({
-    palette: {
-      background: {
-        paper: '#DAF7A6'
-      },
-      secondary: {
-        main: '#DAF7A6',
-      },
+  ...baseTheme,
+  palette: {
+    background: {
+      paper: '#DAF7A6'
     },
-  });
+    secondary: {
+      main: '#DAF7A6',
+    },
+  },
+});
 
 export default function SignIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -38,11 +40,11 @@ export default function SignIn() {
   };
 
   return (
-    // <ThemeProvider theme={SignInTheme}>
-    <Card >
+    <ThemeProvider theme={SignInTheme}>
+    <Card>
 
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <Box
           sx={{
             marginTop: 8,
@@ -92,14 +94,9 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+            <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" color="primary" variant="body2" underline="hover">
+                <Link href="/SignUp" variant="body2" underline="hover">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -109,6 +106,6 @@ export default function SignIn() {
       </Container>
     </Card>
 
-//    </ThemeProvider>
+    </ThemeProvider>
   );
 }
