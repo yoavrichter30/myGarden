@@ -73,7 +73,7 @@ const login = async (request: Request, response: Response) => {
     }
     
     try {
-        console.log(`Login completed for ${email}`);
+        console.log(`Login completed for ${user._id}`);
         await user.save();
 
         return response.status(200).send({
@@ -81,8 +81,8 @@ const login = async (request: Request, response: Response) => {
             'refreshToken': refreshToken
         });
     } catch (err) {
-        console.error(`Error login for - ${user.username}, \n ${err}`);
-        response.status(500).send(`Error login for - ${user.username}, \n ${err}`);
+        console.error(`Error login for - ${user._id}, \n ${err}`);
+        response.status(500).send(`Error login for - ${user._id}, \n ${err}`);
     }
 }
 
@@ -100,10 +100,24 @@ const logout = async (request: Request, response: Response) => {
             console.log(`Fetching user with id ${(logoutUser as { '_id': string })._id} from the DB`);
             const user = await UserSchema.findOne({ '_id': (logoutUser as { '_id': string })._id });
             if (!user){
-                console.log(`User ${(logoutUser as { '_id': string })._id} wasn't found`);
+                console.error(`User ${(logoutUser as { '_id': string })._id} wasn't found`);
                 response.sendStatus(404).send(`User wasn't found`);
+            } else {
+                if(!user.refreshTokens || !user.refreshTokens.includes(refreshToken)){
+                    console.error(`No refresh token were found for ${(logoutUser as { '_id': string })._id}, reseting tokens...`);
+                    user.refreshTokens = [];
+                    await user.save();
+                    return response.sendStatus(401);
+                } else {
+                    console.log(`Logout completed for ${(logoutUser as { '_id': string })._id}, removing current token...`)
+                    user.refreshTokens = user.refreshTokens.filter(t => t !== refreshToken);
+                    user.save();
+                    return response.sendStatus(200);
+                }
             }
         } catch (err) {
+            console.error(`Error logout for - ${(logoutUser as { '_id': string })._id}, \n ${err}`);
+            response.sendStatus(401).send(err);
         }    
     })
 }
