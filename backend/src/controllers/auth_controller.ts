@@ -3,15 +3,19 @@ import UserSchema from '../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const registry = async (request: Request, response: Response) => {
+const register = async (request: Request, response: Response) => {
     const username = request.body.username;
     const email = request.body.email;
     const password = request.body.password;
 
+    console.log(`${username} is trying to register with ${email}`);
+
     if (!username || !email || !password){
+        console.error(`Login failed because of missing parameters`);
         return response.status(400).send("Missing parameters");
     }
 
+    console.log(`Checking if there is an existed user with ${username} and ${email}`);
     const existedUser = await UserSchema.findOne({
         $or: [
             {'username': username},
@@ -19,6 +23,7 @@ const registry = async (request: Request, response: Response) => {
         ]
     });
     if (existedUser != null) {
+        console.error(`Register failed for ${username} because username or email is already used`);
         return response.status(409).send("Username or email is already used");
     }
 
@@ -26,9 +31,11 @@ const registry = async (request: Request, response: Response) => {
     const encryptedPassword = await bcrypt.hash(password, salt);
 
     try {
+        console.log(`Saving new user ${username} to the DB`);
         const user = await UserSchema.create({'username': username, 'password': encryptedPassword, 'email': email});
         return response.status(201).send(user);
     } catch (err) {
+        console.error(`Error in creating new user - ${username}, \n ${err}`);
         response.status(500).send(`Error in creating new user - ${username}, \n ${err}`);
     }
 }
@@ -37,17 +44,23 @@ const login = async (request: Request, response: Response) => {
     const email = request.body.email;
     const password = request.body.password;
 
+    console.log(`${email} is trying to login`)
+
     if (!email || !password){
+        console.error(`Login failed because of missing parameters`);
         return response.status(400).send("Missing parameters");
     }
 
+    console.log(`Fetching user with email ${email}`)
     const user = await UserSchema.findOne({'email': email});
     if (user == null) {
+        console.error(`User for ${email} doesn't exists`);
         return response.status(404).send("User for that email doesn't exists");
     } 
 
     const isPasswdsMatches = await bcrypt.compare(password, user.password);
     if (!isPasswdsMatches){
+        console.error(`Passwords for ${email} doesn't match - login failed`);
         return response.status(401).send("Wrong email or password");
     }
 
@@ -60,6 +73,7 @@ const login = async (request: Request, response: Response) => {
     }
     
     try {
+        console.log(`Login completed for ${email}`);
         await user.save();
 
         return response.status(200).send({
@@ -67,6 +81,29 @@ const login = async (request: Request, response: Response) => {
             'refreshToken': refreshToken
         });
     } catch (err) {
+        console.error(`Error login for - ${user.username}, \n ${err}`);
         response.status(500).send(`Error login for - ${user.username}, \n ${err}`);
     }
+}
+
+const logout = async (request: Request, response: Response) => {
+    const header = request.headers['authorization'];
+    const refreshToken = header && header.split(' ')[1]; // remove the Bearer
+
+    if (refreshToken == null) { return response.sendStatus(401); }
+
+    jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as string, async (err, logoutUser) => {
+        console.log(`JWT verify - ${err}`);
+        if (err) return response.sendStatus(401);
+
+        try {
+            console.log(`Fetching user with id ${(logoutUser as { '_id': string })._id} from the DB`);
+            const user = await UserSchema.findOne({ '_id': (logoutUser as { '_id': string })._id });
+            if (!user){
+                console.log(`User ${(logoutUser as { '_id': string })._id} wasn't found`);
+                response.sendStatus(404).send(`User wasn't found`);
+            }
+        } catch (err) {
+        }    
+    })
 }
