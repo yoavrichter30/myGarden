@@ -11,7 +11,7 @@ export default function App() {
     <>
     <ThemeProvider theme={baseTheme}>
       <PublicLayout />
-
+      
       <CssBaseline />
 
       <Outlet />
