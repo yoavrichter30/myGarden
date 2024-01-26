@@ -19,14 +19,6 @@ import baseTheme from '../../theme.ts';
 
 const SignInTheme = createTheme({
   ...baseTheme,
-  palette: {
-    background: {
-      paper: '#DAF7A6'
-    },
-    secondary: {
-      main: '#DAF7A6',
-    },
-  },
 });
 
 export default function SignIn() {
@@ -41,8 +33,9 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={SignInTheme}>
-    <Card>
+            <div  className="signupcard">
 
+    <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
       <Container component="main" maxWidth="xs">
         {/* <CssBaseline /> */}
         <Box
@@ -105,7 +98,7 @@ export default function SignIn() {
         </Box>
       </Container>
     </Card>
-
+</div>
     </ThemeProvider>
   );
 }

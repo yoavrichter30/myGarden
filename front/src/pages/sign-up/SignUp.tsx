@@ -1,28 +1,20 @@
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 import { Avatar, Card } from '@mui/material';
 import { SetStateAction, useState } from 'react';
+import "./SignUp.css"
+import Box from '@mui/material/Box';
 
 const SignUpTheme = createTheme({
   ...baseTheme,
-  palette: {
-    background: {
-      paper: '#DAF7A6'
-    },
-    secondary: {
-      main: '#DAF7A6',
-    },
-  },
 });
 
 const getInitials = (first: string, last: string) => `${first.charAt(0).toUpperCase()}${last.charAt(0).toUpperCase()}`;
@@ -54,7 +46,8 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={SignUpTheme}>
-      <Card>
+      <div  className="signupcard">
+      <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
       <Container component="main" maxWidth="xs">
         {/* <CssBaseline /> */}
         <Box
@@ -153,7 +146,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/SignIn" variant="body2"  underline="hover">
+                <Link href="/SignIn" variant="body2" underline="hover">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -162,6 +155,7 @@ export default function SignUp() {
         </Box>
       </Container>
       </Card>
+      </div>
     </ThemeProvider>
   );
 }
