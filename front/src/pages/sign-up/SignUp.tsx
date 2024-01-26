@@ -49,7 +49,6 @@ export default function SignUp() {
       <div  className="signupcard">
       <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
       <Container component="main" maxWidth="xs">
-        {/* <CssBaseline /> */}
         <Box
           sx={{
             marginTop: 8,

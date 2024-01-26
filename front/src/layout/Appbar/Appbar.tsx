@@ -9,8 +9,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import baseTheme from '../../theme.ts'
-import Box from '@mui/material/Box';
 import { Menu, MenuItem } from '@mui/material';
+import Box from '@mui/material/Box';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
