@@ -29,7 +29,8 @@ export default function SignIn() {
   return (
     <ThemeProvider theme={SignInTheme}>
             <div  className="signupcard">
-
+      <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
+       
     <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
       <Container component="main" maxWidth="xs">
         <Box
@@ -92,6 +93,7 @@ export default function SignIn() {
         </Box>
       </Container>
     </Card>
+      </Grid>
 </div>
     </ThemeProvider>
   );
