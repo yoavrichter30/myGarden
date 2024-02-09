@@ -1,3 +1,9 @@
+.MuiInputBase-input  {
+    background: white;
+}
+.MuiTextField-root {
+    background: white;
+}
 .signupcard {
   margin: 0;
   display: flex;

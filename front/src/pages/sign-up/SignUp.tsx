@@ -47,114 +47,116 @@ export default function SignUp() {
   return (
     <ThemeProvider theme={SignUpTheme}>
       <div  className="signupcard">
-      <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
-      <Container component="main" maxWidth="xs">
-        {/* <CssBaseline /> */}
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar>{getInitials(firstNameInput, lastNameInput)}</Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }} onSubmit={handleSubmit}> 
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstname"
-                  required
-                  fullWidth
-                  color="success"
-                  id="firstname"
-                  label="First Name"
-                  autoFocus
-                  onChange={handleFirstNameChange}
-                />
+      <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
+        
+        <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
+        <Container component="main" maxWidth="xs">
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar>{getInitials(firstNameInput, lastNameInput)}</Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up
+            </Typography>
+            <Box component="form" noValidate sx={{ mt: 3 }} onSubmit={handleSubmit}> 
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    autoComplete="given-name"
+                    name="firstname"
+                    required
+                    fullWidth
+                    color="success"
+                    id="firstname"
+                    label="First Name"
+                    autoFocus
+                    onChange={handleFirstNameChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    color="success"
+                    id="lastname"
+                    label="Last Name"
+                    name="lastname"
+                    autoComplete="family-name"
+                    onChange={handleLastNameChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    color="success"
+                    id="username"
+                    label="User Name"
+                    name="username"
+                    autoComplete="family-name"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    color="success"
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    color="success"
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    color="success"
+                    name="confirmpassword"
+                    label="Confirm Password"
+                    type="password"
+                    id="confirmpassword"
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  color="success"
-                  id="lastname"
-                  label="Last Name"
-                  name="lastname"
-                  autoComplete="family-name"
-                  onChange={handleLastNameChange}
-                />
+              <Button
+                color="success"
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign Up
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link href="/SignIn" variant="body2" underline="hover">
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  color="success"
-                  id="username"
-                  label="User Name"
-                  name="username"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  color="success"
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  color="success"
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  color="success"
-                  name="confirmpassword"
-                  label="Confirm Password"
-                  type="password"
-                  id="confirmpassword"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              color="success"
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/SignIn" variant="body2" underline="hover">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-      </Card>
+        </Container>
+        </Card>
+      </Grid>
       </div>
     </ThemeProvider>
   );
