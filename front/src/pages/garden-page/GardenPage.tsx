@@ -3,12 +3,21 @@ import baseTheme from '../../theme.ts';
 // import "./GardenPage.css"
 import PlantCard from '../../components/PlantCard.tsx';
 import Grid from '@mui/material/Grid';
+// import { useNavigate, Link, useLocation } from "react-router-dom";
+// import React from 'react';
+
+// function useQuery() {
+//   const { search } = useLocation();
+
+//   return React.useMemo(() => new URLSearchParams(search), [search]);
+// }
 
 const GardenPageTheme = createTheme({
   ...baseTheme,
 });
 
-export default function GardenPage() {
+export default function GardenPage({ name }) {
+
   const plantData = [
     { title: 'Monstera Deliciosa', description: 'Monstera deliciosa, the Swiss cheese plant or split-leaf philodendron is a species of flowering plant native to tropical forests of southern Mexico, south to Panama. It has been introduced to many tropical areas, and has become a mildly invasive species in Hawaii, Seychelles, Ascension Island and the Society Islands. It is very widely grown in temperate zones as a houseplant.', imageUrl: 'https://www.houseplant.co.uk/cdn/shop/files/monstera-shoot-pink.jpg?v=1686074374&width=1946' },
     { title: 'Calathea', description: 'alathea is a genus of neotropical rhizomatous herbaceous perennial plants that are known for the unique leaf movements of patterned foliage (more on that below). Calatheas are also considered pet-friendly plants, making them great plant picks for anyone that shares a space with curious pets.', imageUrl: 'https://media.greg.app/Y2FyZS1wbGFudC1wcm9maWxlL0NhbGF0aGVhX21lZGFsbGlvbi5qcGc=?format=pjpeg&optimize=high&auto=webp&precrop=1000:1000,smart&fit=crop&width=1000&height=1000' },
