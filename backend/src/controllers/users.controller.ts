@@ -1,6 +1,6 @@
 import UserSchema, { IUser } from "../models/user";
-import createController from "./base.controller";
+import baseController from "./base.controller";
 
-const usersController = createController<IUser>(UserSchema);
+const usersController = baseController<IUser>(UserSchema);
 
 export default usersController;

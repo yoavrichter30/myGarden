@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoute from "./routes/auth.route";
+import PlantsRoute from "./routes/plants.route";
 import http from 'http';
 import bodyParser from "body-parser";
 
@@ -31,6 +32,7 @@ const init = (): Promise<Express> => {
       
       // Routes
       app.use("/auth", authRoute);
+      app.use("/plants", PlantsRoute)
 
       console.info(`Started listening on port ${port}`);
       resolve(app);
