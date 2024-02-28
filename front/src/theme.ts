@@ -2,12 +2,15 @@ import { createTheme } from '@mui/material/styles';
 
 const baseTheme = createTheme({
   typography: {
-    fontFamily: ["Ubuntu", "sans-serif"].join(","),
+    fontFamily: ["Roboto", "sans-serif"].join(","),
   },
   palette: {
-    // primary: {
-    //   main: "#A6CF98"
-    // },
+    primary: {
+      main: "#A6CF98"
+    },
+    secondary: {
+      main: "#bdbdbd"
+    },
     garden: {
       main: "#A6CF98"
     }
