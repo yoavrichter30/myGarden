@@ -28,7 +28,7 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={SignInTheme}>
-            <div  className="signupcard">
+            <div  className="signincard">
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
        
     <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
@@ -84,8 +84,8 @@ export default function SignIn() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/SignUp" variant="body2" underline="hover">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/SignUp" variant="body2" underline="hover" className='signinRedirectionLink'>
+                  "Don't have an account? Sign Up"
                 </Link>
               </Grid>
             </Grid>

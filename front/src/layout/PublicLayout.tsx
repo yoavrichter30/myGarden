@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import SearchAppBar from "./Appbar/Appbar";
 import GardenPage from "../pages/garden-page/GardenPage";
 import PlantPage from "../pages/plant-page/PlantPage";
+import ExplorePage from "../pages/explore-page/ExplorePage";
 
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import React from 'react';
@@ -21,6 +22,7 @@ export default function PublicLayout() {
         <Routes>
           <Route path="/gardenPage" element={<GardenPage name={query.get("name")} />} />
           <Route path="/plantPage" element={<PlantPage plantId={query.get("plantId")}/>} />
+          <Route path="/explorePage" element={<ExplorePage />} />
           {/* <Route path="/profile" element={<SignUp />} /> */}
         </Routes>
       </div>
