@@ -7,7 +7,7 @@ import SignIn from './pages/sign-in/SignIn.tsx';
 import SignUp from './pages/sign-up/SignUp.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
       <BrowserRouter>
         <Routes>
           <Route path="*" element={<App />} />
@@ -15,5 +15,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="signup" element={<SignUp />} />
         </Routes>
       </BrowserRouter>     
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )
