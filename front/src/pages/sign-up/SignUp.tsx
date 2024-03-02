@@ -1,7 +1,5 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -9,9 +7,11 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 import { Avatar, Card } from '@mui/material';
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import "./SignUp.css"
 import Box from '@mui/material/Box';
+import { IUser } from '../../services/user-service.ts';
+import { register } from '../../services/user-service.ts';
 
 const SignUpTheme = createTheme({
   ...baseTheme,
@@ -28,7 +28,6 @@ export default function SignUp() {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
-
 
   const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartedRegister(true);
@@ -60,24 +59,27 @@ export default function SignUp() {
     setConfirmPasswordInput(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      firstname: data.get('firstname'),
-      lastname: data.get('lastname'),
-      username: data.get('username'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    if (data.get('email') && data.get('password') && data.get('firstname') && data.get('lastname')){
+      const newUser: IUser = {
+        email: data.get('email')?.toString(),
+        password: data.get('password')?.toString(),
+        username: data.get('username')?.toString(),
+        firstName: data.get('firstname')?.toString(),
+        lastName: data.get('lastname')?.toString()
+      };
+      const res = await register(newUser);
+      console.log(res);
+    }
   };
 
   return (
     <ThemeProvider theme={SignUpTheme}>
       <div className="signupcard">
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
-        
-        <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
+        <Card className='mainCard' variant="outlined">
         <Container component="main" maxWidth="xs">
           <Box
             sx={{

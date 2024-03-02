@@ -12,7 +12,7 @@ const register = async (request: Request, response: Response) => {
     console.log(`${username} is trying to register with ${email}`);
 
     if (!username || !email || !password){
-        console.error(`Login failed because of missing parameters`);
+        console.error(`register failed because of missing parameters`);
         return response.status(400).send("Missing parameters");
     }
 
@@ -33,7 +33,8 @@ const register = async (request: Request, response: Response) => {
 
     try {
         console.log(`Saving new user ${username} to the DB`);
-        const user = await UserSchema.create({'username': username, 'password': encryptedPassword, 'email': email});
+        const user = await UserSchema.create({'username': username, 'password': encryptedPassword, 'email': email,
+                                              'firstName' : request.body.firstName, 'lastName': request.body.lastName});
         return response.status(201).send(user);
     } catch (err) {
         console.error(`Error in creating new user - ${username}, \n ${err}`);
