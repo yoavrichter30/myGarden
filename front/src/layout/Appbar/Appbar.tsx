@@ -9,8 +9,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import baseTheme from '../../theme.ts'
-import { Menu, MenuItem } from '@mui/material';
+import { Button, Menu, MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -71,6 +72,11 @@ export default function SearchAppBar() {
     // handleMobileMenuClose();
   };
 
+  const Signout = () => {
+    handleMenuClose();
+    routeSignin();
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -89,9 +95,17 @@ export default function SearchAppBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={Signout}>Signout</MenuItem>
     </Menu>
   );
+
+  let navigate = useNavigate(); 
+  const routeGarden = () => routeChange('/gardenPage');
+  const routeExplore = () => routeChange('/explorePage');
+  const routeSignin = () => routeChange('/Signin');
+  const routeProfile = () => routeChange('/gardenPage');
+
+  const routeChange = (path: string) => navigate(path);
 
   return (
     <ThemeProvider theme={theme}>
@@ -107,7 +121,14 @@ export default function SearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
+            <Button onClick={routeExplore}
+              color="inherit"
+            >
+              <SearchIcon />
+              Explore Random Plants
+            </Button>
           <Typography
+            onClick={routeGarden}
             variant="h6"
             noWrap
             component="div"
@@ -115,7 +136,7 @@ export default function SearchAppBar() {
           >
             My Garden
           </Typography>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -123,7 +144,8 @@ export default function SearchAppBar() {
               placeholder="Explore plants..."
               inputProps={{ 'aria-label': 'Search' }}
             />
-          </Search>
+          </Search> */}
+
           <MenuItem onClick={handleProfileMenuOpen}>
             <IconButton
               size="large"

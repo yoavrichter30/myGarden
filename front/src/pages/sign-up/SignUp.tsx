@@ -77,7 +77,7 @@ export default function SignUp() {
       <div className="signupcard">
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
         
-        <Card className="mainCard" variant="outlined">
+        <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
         <Container component="main" maxWidth="xs">
           <Box
             sx={{
@@ -175,7 +175,7 @@ export default function SignUp() {
                 </Grid>
               </Grid>
               <Button
-                color="primary"
+                color="success"
                 className='signupBtn'
                 type="submit"
                 fullWidth
@@ -186,7 +186,7 @@ export default function SignUp() {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link className='signinRedirectionLink' href="/SignIn" variant="body2" underline="hover">
+                  <Link className='signupRedirectionLink' href="/SignIn" variant="body2" underline="hover">
                     Already have an account? Sign in
                   </Link>
                 </Grid>
