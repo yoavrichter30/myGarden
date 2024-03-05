@@ -3,27 +3,47 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
+import GrassOutlinedIcon from '@mui/icons-material/GrassOutlined';import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "./SignIn.css"
 import baseTheme from '../../theme.ts';
 import Box from '@mui/material/Box';
+import { useState } from 'react';
+import { IUser, login } from '../../services/user-service.ts';
 
 const SignInTheme = createTheme({
   ...baseTheme,
 });
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const [emailInput, setEmailInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [startedRegister, setStartedRegister] = useState(false);
+
+  const handleEmailchange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStartedRegister(true);
+    setEmailInput(event.target.value);
+  };
+
+  const handlePasswordchange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStartedRegister(true);
+    setPasswordInput(event.target.value);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    if (data.get('email') && data.get('password') ){
+      const user: IUser = {
+        email: data.get('email')?.toString(),
+        password: data.get('password')?.toString()
+      };
+      const res = await login(user);
+      console.log(res);
+    }
   };
 
   return (
@@ -31,7 +51,7 @@ export default function SignIn() {
             <div  className="signincard">
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
        
-    <Card style={{ backgroundColor: baseTheme.palette.garden.main }}>
+    <Card className='mainCard' variant="outlined">
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -41,14 +61,13 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          </Avatar> */}
+          <GrassOutlinedIcon color="primary" sx={{ fontSize: '7vw' }} />
           <Typography component="h1" variant="h5">
-            My Garden
+            MyGarden
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
-              color="success"
+              color="secondary"
               margin="normal"
               required
               fullWidth
@@ -57,9 +76,11 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={handleEmailchange}
+              error={startedRegister && emailInput.length < 3}
             />
             <TextField
-              color="success"
+              color="secondary"
               margin="normal"
               required
               fullWidth
@@ -68,13 +89,12 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handlePasswordchange}
+              error={startedRegister && passwordInput.length < 3}
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Button
-              color="success"
+              color="primary"
+              className='mainBtn'
               type="submit"
               fullWidth
               variant="contained"

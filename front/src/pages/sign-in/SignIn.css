@@ -4,6 +4,12 @@
 .MuiTextField-root {
     background: white;
 }
+
+.mainCard {
+  border-color: #A6CF98 !important;
+  border-width: 0.3vw !important;
+}
+
 .signincard {
     margin: 0;
     display: flex;
@@ -14,4 +20,8 @@
 
   .signinRedirectionLink{
     color: blue !important;
+  }
+
+  .mainBtn {
+    color: white !important;
   }
