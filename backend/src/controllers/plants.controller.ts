@@ -1,4 +1,9 @@
 import { Request, Response } from "express";
+import PlantSchema, { IPlant } from "../models/plant";
+import baseController from "./base.controller";
+
+const plantsController = baseController<IPlant>(PlantSchema);
+
 
 const explore = async (req: Request, res: Response) => {
     console.log(`Getting random plants for exploring`);

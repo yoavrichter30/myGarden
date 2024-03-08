@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 // import "./GardenPage.css"
-import PlantCard from '../../components/PlantCard.tsx';
+import PlantCard from '../../components/Posts/PlantCard.tsx';
 import Grid from '@mui/material/Grid';
 // import { useNavigate, Link, useLocation } from "react-router-dom";
 // import React from 'react';
