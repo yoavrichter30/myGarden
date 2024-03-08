@@ -40,11 +40,11 @@ export default function PlantPage({plantId}) {
     <ThemeProvider theme={PlantPageTheme}>       
       <Grid container alignItems="center" justifyContent="center"  spacing={2} style={{ flexDirection: 'column' }}>
           <Grid item xs={8} sm={8} md={8} lg={8} >
-            <PlantCard 
+            {/* <PlantCard 
               title={currPlant.title}
               description={currPlant.description}
               imageUrl={currPlant.imageUrl}
-            />
+            /> */}
           </Grid>
           {currPlant.reviews.map((plantReview, index) => (
             <Grid item xs={8} sm={8} md={8} lg={8} >
