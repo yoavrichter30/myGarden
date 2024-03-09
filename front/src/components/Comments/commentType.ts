@@ -1,4 +1,4 @@
 export type Comment = {
-    userid: string,
+    username: string,
     text: string
 }
