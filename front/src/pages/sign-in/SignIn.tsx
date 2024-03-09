@@ -10,14 +10,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "./SignIn.css"
 import baseTheme from '../../theme.ts';
 import Box from '@mui/material/Box';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { IUser, login } from '../../services/user-service.ts';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../auth/AuthContext.tsx';
 
 const SignInTheme = createTheme({
   ...baseTheme,
 });
 
 export default function SignIn() {
+  let navigate = useNavigate();
+  const {user, setUser} = useContext(AuthContext);
 
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
@@ -42,7 +46,9 @@ export default function SignIn() {
         password: data.get('password')?.toString()
       };
       const res = await login(user);
-      console.log(res);
+      localStorage.setItem('user', JSON.stringify({...user, ...res}));
+      setUser(JSON.stringify({...user, ...res}));
+      navigate('/explorePage');
     }
   };
 

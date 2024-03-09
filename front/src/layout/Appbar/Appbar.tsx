@@ -13,6 +13,8 @@ import { Button, Menu, MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
+import AuthContext from '../../auth/AuthContext.tsx';
+import { useContext } from 'react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,6 +64,8 @@ const theme = createTheme({
 });
 
 export default function SearchAppBar() {
+  const {user, setUser} = useContext(AuthContext);
+  
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -75,6 +79,8 @@ export default function SearchAppBar() {
 
   const Signout = () => {
     handleMenuClose();
+    localStorage.removeItem('user');
+    setUser({});
     routeSignin();
   }
 
