@@ -45,12 +45,12 @@ export class BaseController<ModelType>{
 
     UpdateById(req: Request, res: Response) {
         console.log(`Updating - ${this.model.modelName} with ID - ${req.params.id}`);
-        res.send("put student by id: " + req.params.id);
+        res.send("put by id: " + req.params.id);
     }
 
     deleteById(req: Request, res: Response) {
         console.log(`Deleting - ${this.model.modelName} with ID - ${req.params.id}`);
-        res.send("delete student by id: " + req.params.id);
+        res.send("delete by id: " + req.params.id);
     }
 }
 
