@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 // import "./ExplorePage.css"
-import PlantCard from '../../components/PlantCard.tsx';
+import ExplorePlantCard from '../../components/ExplorePlantCard.tsx';
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 import { ExplorePlant, ExplorePlantData } from './explorePlantType.ts';
@@ -28,7 +28,7 @@ export default function ExplorePage() {
       <Grid container alignItems="center" justifyContent="center"  spacing={2} style={{ flexDirection: 'column' }}>
         {plants.map((plant, index: number) => (
           <Grid item xs={8} sm={8} md={8} lg={8} key={index}>
-            <PlantCard 
+            <ExplorePlantCard 
               title={plant.common_name}
               description={`Slug: ${plant.slug}, Scientific name: ${plant.scientific_name}, Year: ${plant.year}, Bibliography: ${plant.bibliography}, Rank: ${plant.rank}, Family: ${plant.family_common_name}, Genus: ${plant.genus}`}
               imageUrl={plant.image_url}
