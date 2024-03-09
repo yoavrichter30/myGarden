@@ -22,25 +22,20 @@ const PlantCard = ({ post }: {post: Post}) => {
       />
        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="div" variant="h5" align="left" >          
-          {post.plantName}
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Typography component="div" variant="h5" align="left" >          
+            {post.plantName}
+            </Typography>
+            <Typography style={{ paddingLeft: '10px' , paddingTop: '10px' }} variant="subtitle2" color="text.secondary" component="div" align="right">
+            by {post.username}
+            </Typography>
+          </Box>
           <Typography variant="subtitle1" color="text.secondary" component="div" align="left">
           {post.description}
           </Typography>
-        </CardContent>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="div" variant="h5" align="left" >          
-          Comments
+          <Typography variant="subtitle2" color="text.secondary" component="div" align="left">
+          {post.comments.length} Comments
           </Typography>
-          {(post.comments).map((comment, index) => (
-            <Typography variant="subtitle1" color="text.secondary" component="div" align="left" key={index}>
-            {comment.text}
-            </Typography>
-          ))}
-          <TextField id="standard-basic" label="New comment" variant="standard"/>
         </CardContent>
       </Box>
     </Card>

@@ -20,7 +20,7 @@ export default function PublicLayout() {
       <SearchAppBar />
       <div style={{ marginTop: '64px' /* Adjust the value based on your navbar height */ }}>
         <Routes>
-          <Route path="/gardenPage" element={<GardenPage name={query.get("name")} />} />
+          <Route path="/gardenPage" element={<GardenPage username={query.get("username")} />} />
           <Route path="/plantPage" element={<PlantPage plantId={query.get("plantId")}/>} />
           <Route path="/explorePage" element={<ExplorePage />} />
           {/* <Route path="/profile" element={<SignUp />} /> */}

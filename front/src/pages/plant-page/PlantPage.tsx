@@ -26,10 +26,10 @@ export default function PlantPage({plantId}) {
 
   function getPlantFromServer(plantId) {
     // Your function logic here
-    return { ...plantData , reviews: plantsReview};
+    return { ...post , reviews: plantsReview};
   }
 
-  const plantData = { title: 'Monstera Deliciosa', description: 'Monstera deliciosa, the Swiss cheese plant or split-leaf philodendron is a species of flowering plant native to tropical forests of southern Mexico, south to Panama. It has been introduced to many tropical areas, and has become a mildly invasive species in Hawaii, Seychelles, Ascension Island and the Society Islands. It is very widely grown in temperate zones as a houseplant.', imageUrl: 'https://www.houseplant.co.uk/cdn/shop/files/monstera-shoot-pink.jpg?v=1686074374&width=1946' };
+  const post = { plantName: 'Monstera Deliciosa', description: 'Monstera deliciosa, the Swiss cheese plant or split-leaf philodendron is a species of flowering plant native to tropical forests of southern Mexico, south to Panama. It has been introduced to many tropical areas, and has become a mildly invasive species in Hawaii, Seychelles, Ascension Island and the Society Islands. It is very widely grown in temperate zones as a houseplant.', imageUrl: 'https://www.houseplant.co.uk/cdn/shop/files/monstera-shoot-pink.jpg?v=1686074374&width=1946' , comments: [{username: "8689440", text: "nice monstera bro!"}]};
   const plantsReview = [
     { firstname: 'Nir', stars: '3.5', review: 'Monstera deliciosa, the Swiss cheese plant or split-leaf philodendron is a species of flowering plant native to tropical forests of southern Mexico, south to Panama. It has been introduced to many tropical areas, and has become a mildly invasive species in Hawaii, Seychelles, Ascension Island and the Society Islands. It is very widely grown in temperate zones as a houseplant.', imageUrl: 'https://www.houseplant.co.uk/cdn/shop/files/monstera-shoot-pink.jpg?v=1686074374&width=1946' },
     { firstname: 'Yoav', stars: '1', review: 'Monstera deliciosa, the Swiss cheese plant or split-leaf philodendron is a species of flowering plant native to tropical forests of southern Mexico, south to Panama. It has been introduced to many tropical areas, and has become a mildly invasive species in Hawaii, Seychelles, Ascension Island and the Society Islands. It is very widely grown in temperate zones as a houseplant.', imageUrl: 'https://www.houseplant.co.uk/cdn/shop/files/monstera-shoot-pink.jpg?v=1686074374&width=1946' },
@@ -40,11 +40,9 @@ export default function PlantPage({plantId}) {
     <ThemeProvider theme={PlantPageTheme}>       
       <Grid container alignItems="center" justifyContent="center"  spacing={2} style={{ flexDirection: 'column' }}>
           <Grid item xs={8} sm={8} md={8} lg={8} >
-            {/* <PlantCard 
-              title={currPlant.title}
-              description={currPlant.description}
-              imageUrl={currPlant.imageUrl}
-            /> */}
+          <PlantCard 
+              post={post}
+            />
           </Grid>
           {currPlant.reviews.map((plantReview, index) => (
             <Grid item xs={8} sm={8} md={8} lg={8} >

@@ -1,17 +1,17 @@
 import mongoose from "mongoose";
 
 interface IComment {
-    userid: string,
+    username: string,
     text: string
 }
 
 const commentSchema = new mongoose.Schema({
-    userid: String,
+    username: String,
     text: String
 });
 
 export interface IPost {
-    userid: string,
+    username: string,
     plantName: string,
     imageUrl: string,
     description: string,
@@ -19,7 +19,7 @@ export interface IPost {
 }
 
 const postSchema = new mongoose.Schema<IPost>({
-    userid: {
+    username: {
         type: String,
         required: true,
     },
@@ -41,4 +41,4 @@ const postSchema = new mongoose.Schema<IPost>({
     },
 });
 
-export default mongoose.model<IPost>("Plant", postSchema)
+export default mongoose.model<IPost>("Post", postSchema)
