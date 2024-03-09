@@ -6,12 +6,13 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MenuIcon from '@mui/icons-material/Menu';
+import GrassOutlinedIcon from '@mui/icons-material/GrassOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import baseTheme from '../../theme.ts'
 import { Button, Menu, MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
+import Divider from '@mui/material/Divider';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -112,20 +113,17 @@ export default function SearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="garden">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+        <GrassOutlinedIcon sx={{ fontSize: '3vw' }} />
+        <Button onClick={routeGarden}
+              color="inherit"
+            >
+               MyGarden
+            </Button>
             <Button onClick={routeExplore}
               color="inherit"
             >
               <SearchIcon />
-              Explore Random Plants
+              Explore
             </Button>
           <Typography
           // TODO: add routing to my garden with the current login user
@@ -135,7 +133,7 @@ export default function SearchAppBar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            My Garden
+            
           </Typography>
           <Search>
             <SearchIconWrapper>
