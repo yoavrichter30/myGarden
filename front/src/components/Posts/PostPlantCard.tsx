@@ -5,9 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
 import theme from '../../theme';
-import { useLocation } from "react-router-dom";
 import { Post } from './postType';
-import { Add } from '@mui/icons-material';
 
 // const PlantCard = ({ title, description, imageUrl }: {title: string, description: string, imageUrl:string}) => {
 const PlantCard = ({ post }: {post: Post}) => {

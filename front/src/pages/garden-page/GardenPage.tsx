@@ -1,8 +1,8 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 // import "./GardenPage.css"
-import PlantCard from '../../components/Posts/PlantCard.tsx';
-import NewPost from '../../components/Posts/NewPost.tsx';
+import PlantCard from '../../components/Posts/PostPlantCard.tsx';
+import NewPost from '../../components/Posts/NewPostModal.tsx';
 import Grid from '@mui/material/Grid';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';

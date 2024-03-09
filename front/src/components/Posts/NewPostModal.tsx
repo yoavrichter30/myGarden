@@ -7,10 +7,10 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
-import theme from '../../theme';
+import theme from '../../theme.ts';
 import { ChangeEvent, useRef, useState } from 'react'
-import { uploadPhoto } from '../../services/file-service'
-import { createPost, IPost } from '../../services/posts-service'
+import { uploadPhoto } from '../../services/file-service.ts'
+import { createPost, IPost } from '../../services/posts-service.ts'
 import { useNavigate } from 'react-router-dom';
 
 const GardenPageTheme = createTheme({
@@ -29,11 +29,7 @@ const style = {
 };
 
 const NewPost = ({ username }: {username: string}) => {
-
   const navigate = useNavigate();
-  const routeChange = (path: string) => navigate(path); 
-  const routeGarden = () => routeChange(`/gardenPage/?username=${username}`);
-
 
   const [open, setOpen] = useState(false);
   const [imgSrc, setImgSrc] = useState<File>()
@@ -104,7 +100,6 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
                 id="plantName"
                 label="Plant name"
               />
-              {/* <TextField id="description" label="Description" variant="standard" /> */}
               <TextField
                 name="description"
                 variant="standard"
