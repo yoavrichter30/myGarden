@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoute from "./routes/auth.route";
+import usersRoute from "./routes/users.route";
 import PlantsRoute from "./routes/plants.route";
 import PostsRoute from "./routes/posts.route";
 import http from 'http';
@@ -34,6 +35,7 @@ const init = (): Promise<Express> => {
       
       // Routes
       app.use("/auth", authRoute);
+      app.use("/users", usersRoute);
       app.use("/plants", PlantsRoute)
       app.use("/posts", PostsRoute)
       app.use("/file", FileRoute);

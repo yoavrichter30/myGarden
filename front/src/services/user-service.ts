@@ -34,3 +34,21 @@ export const login = (user: IUser) => {
         })
     });
 }
+
+// export const getAllUsers = () => {
+//     return new Promise<IUser[]>((resolve, reject) => {
+//         console.log(`Get all users`);
+//         apiClient.get("/").then((response) => {
+//             resolve(response.data)
+//         }).catch((error) => {
+//             console.log(error)
+//             reject(error)
+//         })
+//     });
+// }
+
+export const getAllUsers = () => {
+    const abortController = new AbortController()
+    const req = apiClient.get<IUser[]>('users', { signal: abortController.signal })
+    return { req, abort: () => abortController.abort() }
+}
