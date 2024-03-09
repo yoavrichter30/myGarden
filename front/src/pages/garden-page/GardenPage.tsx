@@ -37,14 +37,16 @@ export default function GardenPage({ username }) {
     <ThemeProvider theme={GardenPageTheme}>        
       <Grid container alignItems="center" justifyContent="center"  spacing={2} style={{ flexDirection: 'column' }}>
         {posts.map((post, index) => (
-          <Grid item xs={10} sm={10} md={10} lg={10} key={index}>
+          <Grid item xs={10} sm={10} md={10} lg={10} key={index} width="100%">
             <PlantCard 
               post={post}
             />
           </Grid>
         ))}
       </Grid>
+      <div style={{ marginTop: '20px', marginBottom: '20px' }} >
       <NewPost username={username}/>
+      </div>
 
     </ThemeProvider>
   );

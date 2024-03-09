@@ -6,6 +6,7 @@ import PlantsRoute from "./routes/plants.route";
 import PostsRoute from "./routes/posts.route";
 import http from 'http';
 import bodyParser from "body-parser";
+import FileRoute from "./routes/file.route";
 
 dotenv.config();
 
@@ -35,6 +36,8 @@ const init = (): Promise<Express> => {
       app.use("/auth", authRoute);
       app.use("/plants", PlantsRoute)
       app.use("/posts", PostsRoute)
+      app.use("/file", FileRoute);
+      app.use("/public", express.static("public"));
 
       console.info(`Started listening on port ${port}`);
       resolve(app);

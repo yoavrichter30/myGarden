@@ -12,7 +12,7 @@ import { Add } from '@mui/icons-material';
 // const PlantCard = ({ title, description, imageUrl }: {title: string, description: string, imageUrl:string}) => {
 const PlantCard = ({ post }: {post: Post}) => {
     return (
-    <Card sx={{ display: 'flex'}} style={{ borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
+    <Card sx={{ display: 'flex'}} style={{ width: '100%', borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
       <CardMedia
         component="img"
         alt="Image"

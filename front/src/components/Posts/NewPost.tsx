@@ -9,6 +9,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 import theme from '../../theme';
 import { ChangeEvent, useRef, useState } from 'react'
+import { uploadPhoto } from '../../services/file-service'
+import { createPost, IPost } from '../../services/posts-service'
+import { useNavigate } from 'react-router-dom';
 
 const GardenPageTheme = createTheme({
   ...baseTheme,
@@ -26,6 +29,12 @@ const style = {
 };
 
 const NewPost = ({ username }: {username: string}) => {
+
+  const navigate = useNavigate();
+  const routeChange = (path: string) => navigate(path); 
+  const routeGarden = () => routeChange(`/gardenPage/?username=${username}`);
+
+
   const [open, setOpen] = useState(false);
   const [imgSrc, setImgSrc] = useState<File>()
 
@@ -44,17 +53,32 @@ const selectImg = () => {
     fileInputRef.current?.click()
 }
 
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  if (data.get('plantName')?.toString() && data.get('description')?.toString()) {
+    const url = await uploadPhoto(imgSrc!);
+    console.log("upload returned:" + url);
+    const post: IPost = {
+      username: username,
+      plantName: data.get('plantName')?.toString(),
+      imageUrl: url,
+      description: data.get('description')?.toString(),
+      comments: []
+    } 
+    const res = await createPost(post)
+    navigate(0);
+  }
+};
+
   return (
     <ThemeProvider theme={GardenPageTheme}>        
-
-    <div>
       <Button
         onClick={handleOpen}
         component="label"
         role={undefined}
         variant="contained"
         tabIndex={-1}
-        style={{ marginTop: '20px' }} 
         startIcon={<CloudUploadIcon />}
       >
         New post
@@ -65,24 +89,44 @@ const selectImg = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} style={{ borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
-       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <TextField id="plantName" label="Plant name" variant="standard" />
-          </Box>
-          <TextField id="description" label="Description" variant="standard" />
-          <div className="d-flex justify-content-center position-relative">
-            <Button type="button" className="btn position-absolute bottom-0 end-0" onClick={selectImg}>
-                select image
-            </Button>
-            <img src={imgSrc ? URL.createObjectURL(imgSrc) : ""} style={{ height: "150px", width: "150px" }} className="img-fluid" />
+        <Box component="form" noValidate sx={{ mt: 3 }} onSubmit={handleSubmit}>
+          <Box sx={style} style={{ borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography component="div" variant="h5" align="left" >          
+              New Plant Post
+              </Typography> 
+                   
+              <TextField
+                name="plantName"
+                variant="standard"
+                required
+                color="secondary"
+                id="plantName"
+                label="Plant name"
+              />
+              {/* <TextField id="description" label="Description" variant="standard" /> */}
+              <TextField
+                name="description"
+                variant="standard"
+                required
+                color="secondary"
+                id="description"
+                label="Description"
+              />
+
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            {imgSrc && <img src={URL.createObjectURL(imgSrc)} onClick={selectImg} style={{ height: "150px", width: "150px" }} className="img-fluid" />}
             <input style={{ display: "none" }} ref={fileInputRef} type="file" onChange={imgSelected}></input>
-          </div>
-      </Box>
-      </Box>
-      
+            {!imgSrc && <Button type="button" onClick={selectImg}> select image</Button>}
+            </Box>
+            <Button style={{ marginTop: '20px'}} type="submit">
+                    Post
+            </Button>
+
+          </Box>
+        </Box>
       </Modal>
-    </div>
     </ThemeProvider>
 
   );
