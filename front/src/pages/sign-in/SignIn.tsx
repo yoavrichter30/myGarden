@@ -46,8 +46,8 @@ export default function SignIn() {
         password: data.get('password')?.toString()
       };
       const res = await login(user);
-      localStorage.setItem('user', JSON.stringify({...user, ...res}));
-      setUser(JSON.stringify({...user, ...res}));
+      localStorage.setItem('user', JSON.stringify({...res}));
+      setUser(JSON.stringify({...res}));
       navigate('/explorePage');
     }
   };

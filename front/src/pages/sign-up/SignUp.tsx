@@ -12,6 +12,8 @@ import "./SignUp.css"
 import Box from '@mui/material/Box';
 import { IUser } from '../../services/user-service.ts';
 import { register } from '../../services/user-service.ts';
+import { useNavigate } from 'react-router-dom';
+
 
 const SignUpTheme = createTheme({
   ...baseTheme,
@@ -20,6 +22,7 @@ const SignUpTheme = createTheme({
 const getInitials = (first: string, last: string) => `${first.charAt(0).toUpperCase()}${last.charAt(0).toUpperCase()}`;
 
 export default function SignUp() {
+  let navigate = useNavigate();
   
   const [startedRegister, setStartedRegister] = useState(false);
   const [firstNameInput, setFirstNameInput] = useState('');
@@ -70,8 +73,9 @@ export default function SignUp() {
         firstName: data.get('firstname')?.toString(),
         lastName: data.get('lastname')?.toString()
       };
-      const res = await register(newUser);
-      console.log(res);
+      register(newUser).then(() => {
+      navigate('/signIn');
+      });
     }
   };
 

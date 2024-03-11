@@ -8,7 +8,7 @@ import AuthContext from './auth/AuthContext.tsx';
 import { createContext, useEffect, useState } from 'react';
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
 
   return (    
     <>
