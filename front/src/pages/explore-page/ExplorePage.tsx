@@ -5,15 +5,15 @@ import PlantCard from '../../components/PlantCard.tsx';
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 import { ExplorePlant, ExplorePlantData } from './explorePlantType.ts';
+import { explore } from '../../services/plant-service.ts';
 
 const ExplorePageTheme = createTheme({
   ...baseTheme,
 });
 
-async function fetchPlants(): Promise<ExplorePlant> {
-  const response = await fetch('http://localhost:8080/plants/explore');
-  const plants = await response.json();
-  return plants;
+async function fetchPlants(): Promise<IPlant> {
+  const response = await explore();
+  return response;
 }
 
 export default function ExplorePage() {

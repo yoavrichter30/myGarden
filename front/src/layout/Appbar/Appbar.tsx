@@ -109,7 +109,7 @@ export default function SearchAppBar() {
   let navigate = useNavigate(); 
   const routeGarden = () => routeChange('/gardenPage');
   const routeExplore = () => routeChange('/explorePage');
-  const routeSignin = () => routeChange('/Signin');
+  const routeSignin = () => routeChange('/signIn');
   const routeProfile = () => routeChange('/gardenPage');
 
   const routeChange = (path: string) => navigate(path);
