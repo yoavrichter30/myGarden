@@ -14,6 +14,7 @@ import { useContext, useState } from 'react';
 import { IUser, login } from '../../services/user-service.ts';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../auth/AuthContext.tsx';
+import apiClient from '../../services/api-client.ts';
 
 const SignInTheme = createTheme({
   ...baseTheme,
@@ -48,6 +49,8 @@ export default function SignIn() {
       const res = await login(user);
       localStorage.setItem('user', JSON.stringify({...res}));
       setUser(JSON.stringify({...res}));
+      console.log('Updated default token');
+      apiClient.defaults.headers.common = {'authorization': `bearer ${(res as IUser).accessToken}`};
       navigate('/explorePage');
     }
   };

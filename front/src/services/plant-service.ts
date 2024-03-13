@@ -13,7 +13,7 @@ export const explore = () => {
         apiClient.get("/plants/explore").then((response) => {
             resolve(response.data)
         }).catch((error) => {
-            console.log(error)
+            console.log(apiClient.defaults)
             reject(error)
         })
     });

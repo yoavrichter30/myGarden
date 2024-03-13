@@ -5,6 +5,8 @@ import authRoute from "./routes/auth.route";
 import PlantsRoute from "./routes/plants.route";
 import http from 'http';
 import bodyParser from "body-parser";
+import AuthRequest from './middlewares/auth_middleware';
+import cors from "cors";
 
 dotenv.config();
 
@@ -20,19 +22,20 @@ const init = (): Promise<Express> => {
       const port = process.env.PORT || 3000;
 
       // Middlewares
+      app.use(cors());
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use((req, res, next) => {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Methods", "*");
-      res.header("Access-Control-Allow-Headers", "*");
-      res.header("Access-Control-Allow-Credentials", "true");
-      next();
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "*");
+        res.header("Access-Control-Allow-Headers", "*");
+        res.header("Access-Control-Allow-Credentials", "true");
+        next();
       });
       
       // Routes
       app.use("/auth", authRoute);
-      app.use("/plants", PlantsRoute)
+      app.use("/plants", AuthRequest, PlantsRoute)
 
       console.info(`Started listening on port ${port}`);
       resolve(app);

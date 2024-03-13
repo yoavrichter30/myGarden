@@ -6,9 +6,16 @@ import SearchAppBar from './layout/Appbar/Appbar.tsx'
 import PublicLayout from './layout/PublicLayout.tsx';
 import AuthContext from './auth/AuthContext.tsx';
 import { createContext, useEffect, useState } from 'react';
+import apiClient from './services/api-client.ts';
+import { IUser } from './services/user-service.ts';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
+
+  useEffect(() => {
+    console.log('Updated default token');
+    apiClient.defaults.headers.common = {'authorization': `bearer ${(currentUser as IUser).accessToken}`};
+  }, [currentUser]);
 
   return (    
     <>
