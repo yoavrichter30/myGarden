@@ -15,6 +15,7 @@ const ExplorePageTheme = createTheme({
 });
 
 async function fetchPlants(): Promise<IPlant> {
+  console.log(apiClient.defaults.headers.common["authorization"]);
   const response = await explore();
   return response;
 }
@@ -24,10 +25,8 @@ export default function ExplorePage() {
   const {user, setUser} = useContext(AuthContext);
 
   useEffect(() => {
-    if(apiClient.defaults.headers.common["authorization"]) {
-      fetchPlants().then((plants) => setPlants(plants.data));
-    }
-  }, [user]);
+    fetchPlants().then((plants) => setPlants(plants.data));
+  }, []);
 
   return (
     <ThemeProvider theme={ExplorePageTheme}>        

@@ -47,10 +47,11 @@ export default function SignIn() {
         password: data.get('password')?.toString()
       };
       const res = await login(user);
-      localStorage.setItem('user', JSON.stringify({...res}));
+      localStorage.setItem('accessToken', res.accessToken);
+      localStorage.setItem('refreshToken', res.refreshToken);
       setUser(JSON.stringify({...res}));
       console.log('Updated default token');
-      apiClient.defaults.headers.common = {'authorization': `bearer ${(res as IUser).accessToken}`};
+      // apiClient.defaults.headers.common = {'authorization': `bearer ${(res as IUser).accessToken}`};
       navigate('/explorePage');
     }
   };

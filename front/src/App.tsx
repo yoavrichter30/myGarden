@@ -10,11 +10,11 @@ import apiClient from './services/api-client.ts';
 import { IUser } from './services/user-service.ts';
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
+  const [currentUser, setCurrentUser] = useState(localStorage.getItem('accessToken') || {});
 
   useEffect(() => {
     console.log('Updated default token');
-    apiClient.defaults.headers.common = {'authorization': `bearer ${(currentUser as IUser).accessToken}`};
+    // apiClient.defaults.headers.common = {'authorization': `bearer ${localStorage.getItem('accessToken')}`};
   }, [currentUser]);
 
   return (    

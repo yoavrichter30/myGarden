@@ -79,7 +79,8 @@ export default function SearchAppBar() {
 
   const Signout = () => {
     handleMenuClose();
-    localStorage.removeItem('user');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     setUser({});
     routeSignin();
   }
