@@ -16,6 +16,8 @@ import { IUser, login } from '../../services/user-service.ts';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../auth/AuthContext.tsx';
 import apiClient from '../../services/api-client.ts';
+import GoogleIcon from "@mui/icons-material/Google";
+import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
 
 const SignInTheme = createTheme({
   ...baseTheme,
@@ -38,6 +40,17 @@ export default function SignIn() {
     setStartedRegister(true);
     setPasswordInput(event.target.value);
   };
+
+  const handleGoogleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (codeRes: CodeResponse) => {
+      const { data } = await apiClient.post("/auth/google", codeRes);
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      setUser(JSON.stringify({...data}));
+      navigate('/explorePage');
+    },
+  });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -113,6 +126,14 @@ export default function SignIn() {
             >
               Sign In
             </Button>
+            <Button
+            onClick={handleGoogleLogin}
+            fullWidth
+            variant="outlined"
+            startIcon={<GoogleIcon />}
+          >
+            Continue with Google
+          </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/SignUp" variant="body2" underline="hover" className='signinRedirectionLink'>

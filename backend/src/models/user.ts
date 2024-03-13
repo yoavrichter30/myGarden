@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { boolean } from "webidl-conversions";
 
 export interface IUser {
     email: string;
@@ -8,6 +9,7 @@ export interface IUser {
     firstName: string;
     lastName: string;
     refreshTokens?: string[];
+    isGoogleUser?: boolean;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -29,13 +31,17 @@ const userSchema = new mongoose.Schema<IUser>({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
     },
     profile: {
         type: String,
     },
     refreshTokens: {
         type: [String],
+        required: false,
+    },
+    isGoogleUser: {
+        type: Boolean,
         required: false,
     }
 });
