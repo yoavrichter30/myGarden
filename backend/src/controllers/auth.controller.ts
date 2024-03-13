@@ -125,6 +125,7 @@ const logout = async (request: Request, response: Response) => {
 }
 
 const refresh =  async (request: Request, response: Response) => {
+    console.log('Refreshing token...');
     const header = request.headers['authorization'];
     const refreshToken = header && header.split(' ')[1]; // remove the Bearer
 

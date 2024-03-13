@@ -6,6 +6,8 @@ import PlantsRoute from "./routes/plants.route";
 import PostsRoute from "./routes/posts.route";
 import http from 'http';
 import bodyParser from "body-parser";
+import AuthRequest from './middlewares/auth_middleware';
+import cors from "cors";
 import FileRoute from "./routes/file.route";
 
 dotenv.config();
@@ -22,19 +24,20 @@ const init = (): Promise<Express> => {
       const port = process.env.PORT || 3000;
 
       // Middlewares
+      app.use(cors());
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use((req, res, next) => {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Methods", "*");
-      res.header("Access-Control-Allow-Headers", "*");
-      res.header("Access-Control-Allow-Credentials", "true");
-      next();
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "*");
+        res.header("Access-Control-Allow-Headers", "*");
+        res.header("Access-Control-Allow-Credentials", "true");
+        next();
       });
       
       // Routes
       app.use("/auth", authRoute);
-      app.use("/plants", PlantsRoute)
+      app.use("/plants", AuthRequest, PlantsRoute)
       app.use("/posts", PostsRoute)
       app.use("/file", FileRoute);
       app.use("/public", express.static("public"));
