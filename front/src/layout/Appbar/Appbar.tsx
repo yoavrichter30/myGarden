@@ -133,6 +133,8 @@ export default function SearchAppBar() {
               Explore
             </Button>
           <Typography
+          // TODO: add routing to my garden with the current login user
+            onClick={routeGarden}
             variant="h6"
             noWrap
             component="div"
@@ -140,6 +142,15 @@ export default function SearchAppBar() {
           >
             
           </Typography>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search gardens..."
+              inputProps={{ 'aria-label': 'Search' }}
+            />
+          </Search>
 
           <MenuItem onClick={handleProfileMenuOpen}>
             <IconButton
