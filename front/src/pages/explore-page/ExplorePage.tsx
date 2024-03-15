@@ -15,7 +15,6 @@ const ExplorePageTheme = createTheme({
 });
 
 async function fetchPlants(): Promise<IPlant> {
-  console.log(apiClient.defaults.headers.common["authorization"]);
   const response = await explore();
   return response;
 }

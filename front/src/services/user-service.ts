@@ -34,3 +34,25 @@ export const login = (user: IUser) => {
         })
     });
 }
+
+export const getUserById = (userId: String) => {
+    return new Promise<IUser>((resolve, reject) => {
+        apiClient.get(`/users/${userId}`).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        })
+    });
+}
+
+export const updateById = (userId: String, updatedUser: IUser) => {
+    return new Promise<void>((resolve, reject) => {
+        apiClient.put(`/users/${userId}`, updatedUser).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        })
+    });
+}
