@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import authRoute from "./routes/auth.route";
 import PlantsRoute from "./routes/plants.route";
 import PostsRoute from "./routes/posts.route";
+import usersRoute from "./routes/users.route";
 import http from 'http';
 import bodyParser from "body-parser";
 import AuthRequest from './middlewares/auth_middleware';
@@ -37,7 +38,8 @@ const init = (): Promise<Express> => {
       
       // Routes
       app.use("/auth", authRoute);
-      app.use("/plants", AuthRequest, PlantsRoute)
+      app.use("/plants", AuthRequest, PlantsRoute);
+      app.use("/users", AuthRequest, usersRoute)
       app.use("/posts", PostsRoute)
       app.use("/file", FileRoute);
       app.use("/public", express.static("public"));
