@@ -86,6 +86,15 @@ export default function SearchAppBar() {
   }
 
   const menuId = 'primary-search-account-menu';
+
+  let navigate = useNavigate(); 
+  const routeGarden = () => routeChange('/gardenPage');
+  const routeExplore = () => routeChange('/explorePage');
+  const routeSignin = () => routeChange('/signIn');
+  const routeProfile = () => routeChange('/editProfile');
+
+  const routeChange = (path: string) => navigate(path);
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -102,18 +111,10 @@ export default function SearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={routeProfile}>Profile</MenuItem>
       <MenuItem onClick={Signout}>Signout</MenuItem>
     </Menu>
   );
-
-  let navigate = useNavigate(); 
-  const routeGarden = () => routeChange('/gardenPage');
-  const routeExplore = () => routeChange('/explorePage');
-  const routeSignin = () => routeChange('/signIn');
-  const routeProfile = () => routeChange('/gardenPage');
-
-  const routeChange = (path: string) => navigate(path);
 
   return (
     <ThemeProvider theme={theme}>
