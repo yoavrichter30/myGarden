@@ -80,6 +80,7 @@ const login = async (request: Request, response: Response) => {
         await user.save();
 
         return response.status(200).send({
+            'id': user._id,
             'accessToken': accessToken,
             'refreshToken': refreshToken
         });
@@ -213,6 +214,7 @@ const loginWithGoogle = () => {
             console.log('Logged with Google!');
 
             return response.status(200).send({
+                        'id': user._id,
                         'accessToken': accessToken,
                         'refreshToken': refreshToken
                     });

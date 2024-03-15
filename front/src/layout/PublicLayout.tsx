@@ -5,6 +5,7 @@ import PlantPage from "../pages/plant-page/PlantPage";
 import ExplorePage from "../pages/explore-page/ExplorePage";
 import SignIn from '../pages/sign-in/SignIn.tsx';
 import SignUp from '../pages/sign-up/SignUp.tsx';
+import EditProfile from '../pages/edit-profile-page/EditProdile.tsx';
 import { useNavigate, Link, useLocation, Navigate } from "react-router-dom";
 import React, { useContext, useEffect, useState } from 'react';
 import { IUser } from "../services/user-service.ts";
@@ -30,6 +31,7 @@ export default function PublicLayout() {
         <Route path="/gardenPage" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><GardenPage name={query.get("name")} /></RequireAuth>}/>
         <Route path="/plantPage" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><PlantPage plantId={query.get("plantId")}/></RequireAuth>}/>
         <Route path="/explorePage" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><ExplorePage /></RequireAuth>}/>
+        <Route path="/editProfile" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><EditProfile /></RequireAuth>}/>
 
         <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />
