@@ -10,6 +10,8 @@ import bodyParser from "body-parser";
 import AuthRequest from './middlewares/auth_middleware';
 import cors from "cors";
 import FileRoute from "./routes/file.route";
+import swaggerUI from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
 
 dotenv.config();
 
@@ -35,6 +37,21 @@ const init = (): Promise<Express> => {
         res.header("Access-Control-Allow-Credentials", "true");
         next();
       });
+
+      // Swagger
+      const options = {
+        definition: {
+          openapi: "3.0.0",
+          info: {
+            title: "MyGarden backend",
+            version: "1.0.0",
+            description:
+              "MyGarden Backend",
+          },
+        },
+        apis: [`${__dirname}/apiDoc.yml`],
+      };
+      const specs = swaggerJsDoc(options);
       
       // Routes
       app.use("/auth", authRoute);
@@ -43,6 +60,7 @@ const init = (): Promise<Express> => {
       app.use("/posts", PostsRoute)
       app.use("/file", FileRoute);
       app.use("/public", express.static("public"));
+      app.use("/swagger", swaggerUI.serve, swaggerUI.setup(specs));
 
       console.info(`Started listening on port ${port}`);
       resolve(app);
