@@ -73,4 +73,6 @@ const init = (): Promise<Express> => {
 
 export default init;
 
-init().then((app)=> http.createServer(app).listen(process.env.PORT));
+if(process.env.NODE_ENV !== 'TEST'){
+  init().then((app)=> http.createServer(app).listen(process.env.PORT));
+}
