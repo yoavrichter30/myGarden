@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "export NODE_ENV=TEST&&jest -–coverage --forceExit --runInBand",
+    "test": "export NODE_ENV=TEST&&jest -–coverage --all --forceExit --runInBand",
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts"
