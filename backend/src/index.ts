@@ -71,4 +71,6 @@ const init = (): Promise<Express> => {
   return promise;
 };
 
+export default init;
+
 init().then((app)=> http.createServer(app).listen(process.env.PORT));
