@@ -17,22 +17,20 @@ let testUser = {
 
 beforeAll(async () => {
     app = await initApp();
-    userSchema.deleteOne();
 });
 
 afterAll(async () => {
-    userSchema.deleteOne({uid, ...testUser});
+    const user = await userSchema.findOne({ username: testUser.username });
+    await user?.deleteOne();
     await mongoose.connection.close();
 });
 
-let uid: string;
 let accessToken: string;
 let refreshToken: string;
 
 describe("Auth controller tests", () => {
     test("Test register", async () => {
         const response = await request(app).post("/auth/register").send(testUser);
-        uid = response.body._id;
         expect(response.statusCode).toBe(StatusCodes.CREATED);
     });
     test("Test register with existing user", async () => {
@@ -85,7 +83,7 @@ describe("Auth controller tests", () => {
     test("Test logout", async () => {
         const response = await request(app)
           .get("/auth/logout")
-          .set("Authorization", "Bearer " + accessToken)
+          .set("Authorization", "Bearer " + refreshToken)
           .send();
     
         expect(response.statusCode).toBe(StatusCodes.OK);
