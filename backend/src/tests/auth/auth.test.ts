@@ -3,11 +3,11 @@ import initApp from '../../index';
 import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
 import request from "supertest";
-import userSchema from '../../models/user';
+import userSchema, { IUser } from '../../models/user';
 
 let app: Express;
 
-const testUser = {
+let testUser = {
     email: "test@test.test",
     password: "123456",
     username: "testify",
@@ -17,19 +17,22 @@ const testUser = {
 
 beforeAll(async () => {
     app = await initApp();
-    //userSchema.deleteMany();
+    userSchema.deleteOne();
 });
 
 afterAll(async () => {
+    userSchema.deleteOne({uid, ...testUser});
     await mongoose.connection.close();
 });
 
+let uid: string;
 let accessToken: string;
 let refreshToken: string;
 
 describe("Auth controller tests", () => {
     test("Test register", async () => {
         const response = await request(app).post("/auth/register").send(testUser);
+        uid = response.body._id;
         expect(response.statusCode).toBe(StatusCodes.CREATED);
     });
     test("Test register with existing user", async () => {
@@ -45,8 +48,46 @@ describe("Auth controller tests", () => {
 
         accessToken = response.body.accessToken;
         refreshToken = response.body.refreshToken;
-        
+
         expect(accessToken).toBeDefined();
         expect(refreshToken).toBeDefined();
+    });
+
+    test("Test access without token", async () => {
+        const response = await request(app).get("/plants/explore");
+        expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
+    });
+
+    test("Test after timeout of JWT", async () => {
+        await new Promise((resolve) => setTimeout(() => resolve(""), 5000));
+    
+        const response = await request(app)
+          .get("/explore")
+          .set("Authorization", "JWT " + accessToken);
+        expect(response.statusCode).not.toBe(StatusCodes.OK);
+    });
+
+    test("Test refresh token", async () => {
+        const loginResponse = await request(app).post("/auth/login").send(testUser);
+        refreshToken = loginResponse.body.refreshToken;
+    
+        const response = await request(app)
+          .get("/auth/refresh")
+          .set("Authorization", "Bearer " + refreshToken)
+          .send();
+        expect(response.statusCode).toBe(StatusCodes.OK);
+        expect(response.body.accessToken).toBeDefined();
+        expect(response.body.refreshToken).toBeDefined();
+    
+        refreshToken = response.body.refreshToken;
       });
+
+    test("Test logout", async () => {
+        const response = await request(app)
+          .get("/auth/logout")
+          .set("Authorization", "Bearer " + accessToken)
+          .send();
+    
+        expect(response.statusCode).toBe(StatusCodes.OK);
+    });
 });
