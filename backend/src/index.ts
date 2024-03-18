@@ -57,7 +57,7 @@ const init = (): Promise<Express> => {
       app.use("/auth", authRoute);
       app.use("/plants", AuthRequest, PlantsRoute);
       app.use("/users", AuthRequest, usersRoute)
-      app.use("/posts", PostsRoute)
+      app.use("/posts", AuthRequest, PostsRoute)
       app.use("/file", FileRoute);
       app.use("/public", express.static("public"));
       app.use("/swagger", swaggerUI.serve, swaggerUI.setup(specs));

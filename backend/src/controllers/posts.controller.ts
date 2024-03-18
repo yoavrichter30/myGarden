@@ -17,6 +17,23 @@ export class PostsController extends BaseController<IPost> {
             res.status(500).json({ message: err.message });
         }
     }
+
+    async updatePostById(req: Request, res: Response){
+        const id = req.params.id;
+        const {newPlantName, newImageUrl, newDescription} = req.body;
+
+        if(!newPlantName || !newImageUrl || !newDescription){
+            throw new Error("Missing params");
+        }
+
+        const updatedPost = await postSchema.findByIdAndUpdate(id, { newPlantName, newImageUrl, newDescription}, { new: true })
+
+        if (!updatedPost) {
+            throw new Error("Couldn't find requested user");
+        }
+
+        res.status(201).send();
+    }
 }
 
 // class PostsController extends BaseController<IPost>{
