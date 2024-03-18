@@ -20,19 +20,19 @@ export class PostsController extends BaseController<IPost> {
 
     async updatePostById(req: Request, res: Response){
         const id = req.params.id;
-        const {newPlantName, newImageUrl, newDescription} = req.body;
+        const updatedProps = req.body as IPost;
 
-        if(!newPlantName || !newImageUrl || !newDescription){
+        if(!updatedProps.plantName && !updatedProps.imageUrl && !updatedProps.description){
             throw new Error("Missing params");
         }
 
-        const updatedPost = await postSchema.findByIdAndUpdate(id, { newPlantName, newImageUrl, newDescription}, { new: true })
+        const updatedPost = await postSchema.findByIdAndUpdate(id, updatedProps, { new: true })
 
         if (!updatedPost) {
             throw new Error("Couldn't find requested user");
         }
 
-        res.status(201).send();
+        res.status(200).send();
     }
 }
 
