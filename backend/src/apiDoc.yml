@@ -175,3 +175,32 @@ paths:
           description: Requested data
         "401":
           description: unauthorized
+/posts/{id}:
+    put:
+      tags:
+        - Posts
+      summary: Update post
+      description: Edit fields in post
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: New data
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                plantName:
+                  type: string
+                imageUrl:
+                  typr: string
+                description:
+                  type: string
+        required: true
+      responses:
+        "200":
+          description: Requested post data
+        "400":
+          description: Error in updating post
+        "401":
+          description: unauthorized
