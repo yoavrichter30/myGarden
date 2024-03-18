@@ -144,7 +144,7 @@ const refresh =  async (request: Request, response: Response) => {
                 console.error(`User ${(logoutUser as { '_id': string })._id} wasn't found`);
                 response.sendStatus(404).send(`User wasn't found`);
             } else {
-                if(!user.refreshTokens || !user.refreshTokens.includes(refreshToken)){
+                if(!user.refreshTokens || user.refreshTokens.length === 0){
                     console.error(`No refresh token were found for ${(logoutUser as { '_id': string })._id}, reseting tokens...`);
                     user.refreshTokens = [];
                     await user.save();
@@ -210,6 +210,8 @@ const loginWithGoogle = () => {
             } else {
                 user.refreshTokens.push(refreshToken);
             }
+
+            await user.save();
 
             console.log('Logged with Google!');
 

@@ -12,7 +12,6 @@ export const refreshToken = async (): Promise<void> => {
         headers: {'authorization': `Bearer ${localStorage.getItem('refreshToken') }`}
     })).data;
     
-    apiClient.defaults.headers.common = {'authorization': `bearer ${newUser.accessToken}`};
     localStorage.setItem('refreshToken', newUser.refreshToken);
     localStorage.setItem('accessToken', newUser.accessToken);
 };
