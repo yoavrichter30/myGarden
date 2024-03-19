@@ -1,6 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
-// import "./ExplorePage.css"
 import ExplorePlantCard from '../../components/ExplorePlantCard.tsx';
 import Grid from '@mui/material/Grid';
 import { useContext, useEffect, useState } from 'react';
@@ -22,7 +21,6 @@ async function fetchPlants(): Promise<IPlant> {
 
 export default function ExplorePage() {
   const [plants, setPlants] = useState<ExplorePlantData[]>([]);
-  const {user, setUser} = useContext(AuthContext);
   const [isLoadingActive, setIsLoadingActive] = useState(false);
 
   useEffect(() => {

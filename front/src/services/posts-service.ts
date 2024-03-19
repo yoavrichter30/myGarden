@@ -63,4 +63,15 @@ export const updatePostById = (_id: String, updatedPost: IPost) => {
     });
 }
 
+export const deletePostById = (_id: String) => {
+    return new Promise<IPost>((resolve, reject) => {
+        apiClient.delete(`/posts/${_id}`).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        })
+    });
+}
+
 export default { createPost }
