@@ -19,6 +19,7 @@ import apiClient from '../../services/api-client.ts';
 import GoogleIcon from "@mui/icons-material/Google";
 import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
 import LoadingOverlay from 'react-loading-overlay-ts';
+import Alert from '@mui/material/Alert';
 
 const SignInTheme = createTheme({
   ...baseTheme,
@@ -32,6 +33,7 @@ export default function SignIn() {
   const [passwordInput, setPasswordInput] = useState('');
   const [startedRegister, setStartedRegister] = useState(false);
   const [isLoadingActive, setIsLoadingActive] = useState(false);
+  const [isErrorAppear, setIsErrorAppear] = useState(false);
 
   const handleEmailchange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartedRegister(true);
@@ -76,6 +78,7 @@ export default function SignIn() {
       navigate('/explorePage');
       }).catch((err) => {
         console.log(err);
+        setIsErrorAppear(true);
       }).finally(() => {
         setIsLoadingActive(false);
       });
@@ -101,6 +104,10 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
+          { !isErrorAppear ? <></> : <Alert severity="error">
+            Error Signing in
+          </Alert>
+          }
           <GrassOutlinedIcon color="primary" sx={{ fontSize: '7vw' }} />
           <Typography component="h1" variant="h5">
             MyGarden
