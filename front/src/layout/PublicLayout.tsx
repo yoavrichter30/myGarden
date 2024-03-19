@@ -28,7 +28,7 @@ export default function PublicLayout() {
     <SearchAppBar />
     <div style={{ marginTop: '64px' /* Adjust the value based on your navbar height */ }}>
       <Routes>
-        <Route path="/gardenPage" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><GardenPage name={query.get("name")} /></RequireAuth>}/>
+        <Route path="/gardenPage" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><GardenPage username={query.get("username")} /></RequireAuth>}/>
         <Route path="/plantPage" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><PlantPage plantId={query.get("plantId")}/></RequireAuth>}/>
         <Route path="/explorePage" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><ExplorePage /></RequireAuth>}/>
         <Route path="/editProfile" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><EditProfile /></RequireAuth>}/>

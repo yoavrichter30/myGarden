@@ -6,31 +6,27 @@ import NewPost from '../../components/Posts/NewPostModal.tsx';
 import Grid from '@mui/material/Grid';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
+import { fetchPostsByUser } from '../../services/posts-service.ts';
 
 const GardenPageTheme = createTheme({
   ...baseTheme,
 });
+
+async function getPostByUser(username: String): Promise<IUser> {
+  const response = await fetchPostsByUser(username);
+  return response;
+}
 
 export default function GardenPage({ username }) {
   
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    getPostByUser(username).then((posts: IPost[]) => {
+      setPosts(posts);
 
-    async function fetchPostsByUser() {
-      try {
-        const response = await fetch(`http://localhost:8080/posts/byUser/${username}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch posts');
-        }
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    });
 
-    fetchPostsByUser();
   }, [username]);
 
   return (

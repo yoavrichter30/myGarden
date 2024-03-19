@@ -35,6 +35,11 @@ export const login = (user: IUser) => {
     });
 }
 
+export const getAllUsers = () => {
+    const abortController = new AbortController()
+    const req = apiClient.get<IUser[]>('users', { signal: abortController.signal })
+    return { req, abort: () => abortController.abort() }
+}
 export const getUserById = (userId: String) => {
     return new Promise<IUser>((resolve, reject) => {
         apiClient.get(`/users/${userId}`).then((response) => {

@@ -2,14 +2,6 @@ import apiClient from "./api-client"
 
 import { PostData } from "../components/Post"
 
-// export { CanceledError }
-// const getAllPosts = () => {
-//     const abortController = new AbortController()
-//     const req = apiClient.get<PostData[]>('studentpost', { signal: abortController.signal })
-//     return { req, abort: () => abortController.abort() }
-
-// }
-
 interface IComment {
     username: string,
     text: string
@@ -35,6 +27,17 @@ export const createPost = (post: IPost) => {
             reject(error)
         })
     })
+}
+
+export const fetchPostsByUser = (userId: String) => {
+    return new Promise<IPost>((resolve, reject) => {
+        apiClient.get(`/posts/byUser/${userId}`).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        })
+    });
 }
 
 export default { createPost }
