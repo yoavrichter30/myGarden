@@ -1,7 +1,5 @@
 import apiClient from "./api-client"
 
-import { PostData } from "../components/Post"
-
 export interface IComment {
     username: string,
     text: string
