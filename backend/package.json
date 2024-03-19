@@ -7,7 +7,8 @@
     "test": "export NODE_ENV=TEST&&jest -–coverage --all --forceExit --runInBand",
     "build": "npx tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "prod": "tsc -p ./tsconfig_prod.json && node ./dist/src/server.js"
   },
   "keywords": [],
   "author": "",
