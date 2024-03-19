@@ -14,6 +14,7 @@ import FileRoute from "./routes/file.route";
 import swaggerUI from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 import fs from "fs";
+import path from "path";
 
 dotenv.config();
 
@@ -63,6 +64,19 @@ const init = (): Promise<Express> => {
       app.use("/file", FileRoute);
       app.use("/public", express.static("public"));
       app.use("/swagger", swaggerUI.serve, swaggerUI.setup(specs));
+
+      app.use(
+        "/assets",
+        express.static(
+          path.resolve(__dirname, "..", "..", "front/dist/assets")
+        )
+      );
+
+      app.get("/", (req, res) =>
+        res.sendFile(
+          path.resolve(__dirname, "..", "..", "front/dist", "index.html")
+        )
+      );
 
       console.info(`Started listening on port ${port}`);
       resolve(app);
