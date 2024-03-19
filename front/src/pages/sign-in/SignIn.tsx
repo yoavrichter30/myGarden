@@ -27,7 +27,7 @@ const SignInTheme = createTheme({
 
 export default function SignIn() {
   let navigate = useNavigate();
-  const {user, setUser} = useContext(AuthContext);
+  const {setUser} = useContext<any>(AuthContext);
 
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
@@ -70,11 +70,11 @@ export default function SignIn() {
         email: data.get('email')?.toString(),
         password: data.get('password')?.toString()
       };
-      login(user).then((res) => {
+      login(user).then((res: any) => {
       localStorage.setItem('userId', res.id);
-      localStorage.setItem('userName', res.username);
-      localStorage.setItem('accessToken', res.accessToken);
-      localStorage.setItem('refreshToken', res.refreshToken);
+      localStorage.setItem('userName', res.username ?? '');
+      localStorage.setItem('accessToken', res.accessToken ?? '');
+      localStorage.setItem('refreshToken', res.refreshToken ?? '');
       setUser(JSON.stringify({...res}));
       navigate('/explorePage');
       }).catch((err) => {
