@@ -5,7 +5,7 @@ import NewPostModal from '../../components/Posts/NewPostModal.tsx';
 import Grid from '@mui/material/Grid';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
-import { fetchPostsByUser } from '../../services/posts-service.ts';
+import { fetchPostsByUser, IPost } from '../../services/posts-service.ts';
 import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { IUser } from '../../services/user-service.ts';
@@ -14,7 +14,7 @@ const GardenPageTheme = createTheme({
   ...baseTheme,
 });
 
-async function getPostByUser(username: String): Promise<IUser> {
+async function getPostByUser(username: String): Promise<IPost[]> {
   const response = await fetchPostsByUser(username);
   return response;
 }
