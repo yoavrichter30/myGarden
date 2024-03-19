@@ -26,7 +26,7 @@ export default function ExplorePage() {
 
   useEffect(() => {
     setIsLoadingActive(true)
-    fetchPlants().then((plants) => {
+    fetchPlants().then((plants: any) => {
       setPlants(plants.data);
       setIsLoadingActive(false)
     });
