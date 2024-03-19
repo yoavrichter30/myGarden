@@ -63,6 +63,7 @@ export default function SignIn() {
       };
       const res = await login(user);
       localStorage.setItem('userId', res.id);
+      localStorage.setItem('userName', res.username);
       localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
       setUser(JSON.stringify({...res}));

@@ -2,12 +2,13 @@ import apiClient from "./api-client"
 
 import { PostData } from "../components/Post"
 
-interface IComment {
+export interface IComment {
     username: string,
     text: string
 }
 
 export interface IPost {
+    _id?: string,
     username?: string,
     plantName?: string,
     imageUrl?: string,
@@ -32,6 +33,29 @@ export const createPost = (post: IPost) => {
 export const fetchPostsByUser = (userId: String) => {
     return new Promise<IPost>((resolve, reject) => {
         apiClient.get(`/posts/byUser/${userId}`).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        })
+    });
+}
+
+export const fetchPostsById = (_id: String) => {
+    return new Promise<IPost>((resolve, reject) => {
+        apiClient.get(`/posts/${_id}`).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        })
+    });
+}
+
+
+export const updatePostById = (_id: String, updatedPost: IPost) => {
+    return new Promise<IPost>((resolve, reject) => {
+        apiClient.put(`/posts/${_id}`, updatedPost).then((response) => {
             resolve(response.data);
         }).catch((error) => {
             console.log(error);

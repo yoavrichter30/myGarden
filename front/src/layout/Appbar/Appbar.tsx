@@ -82,6 +82,9 @@ export default function SearchAppBar() {
 
   const Signout = () => {
     handleMenuClose();
+
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     setUser({});
@@ -91,7 +94,7 @@ export default function SearchAppBar() {
   const menuId = 'primary-search-account-menu';
 
   let navigate = useNavigate(); 
-  const routeGarden = () => routeChange('/gardenPage');
+  const routeGarden = () => routeChange(`/gardenPage?username=${localStorage.getItem('userName')}`);
   const routeExplore = () => routeChange('/explorePage');
   const routeSignin = () => routeChange('/signIn');
   const routeProfile = () => routeChange('/editProfile');

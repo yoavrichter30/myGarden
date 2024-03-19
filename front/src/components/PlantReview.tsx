@@ -6,10 +6,11 @@ import Typography from '@mui/material/Typography';
 import { Box, IconButton, Rating } from '@mui/material';
 import theme from '../theme';
 import StarRateIcon from '@mui/icons-material/StarRate';
+import { IComment } from '../services/posts-service.ts';
 
-const PlantReview = ({ firstname, stars, review }: {firstname: string, stars: string,review : string}) => {
+const PlantReview = ({ comment }: {comment: IComment}) => {
   return (
-    <Card sx={{ display: 'flex'}} style={{ borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
+    <Card sx={{ display: 'flex'}} style={{ width: '100%', borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Box sx={{
@@ -18,16 +19,13 @@ const PlantReview = ({ firstname, stars, review }: {firstname: string, stars: st
             bgcolor: 'background.paper',
           }}>
               <Typography component="div" variant="h5" >
-                {firstname}'s Review
+                {comment.username}'s Review
               </Typography> 
-              <Rating name="disabled" value={stars} precision={0.5} disabled  style={{ fontSize: 30 }} sx={{ ml: 2 }}/>
+              {/* <Rating name="disabled" value={stars} precision={0.5} disabled  style={{ fontSize: 30 }} sx={{ ml: 2 }}/> */}
           </Box>
           <Typography variant="subtitle1" color="text.secondary" component="div" align="left">
-            {review}
+            {comment.text}
           </Typography>
-          {/* <Typography variant="subtitle1" color="text.secondary" component="div" align="left">
-            <Rating name="disabled" value={3} disabled  style={{ fontSize: 30 }} align="left"/>
-          </Typography> */}
         </CardContent>
       </Box>
     </Card>
