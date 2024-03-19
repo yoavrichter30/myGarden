@@ -13,6 +13,8 @@ import Box from '@mui/material/Box';
 import { IUser, getUserById, updateById } from '../../services/user-service.ts';
 import { register } from '../../services/user-service.ts';
 import { useNavigate } from 'react-router-dom';
+import LoadingOverlay from 'react-loading-overlay-ts';
+
 
 const SignUpTheme = createTheme({
   ...baseTheme,
@@ -50,6 +52,7 @@ export default function EditProdile() {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [isGoogle, setIsGoogle] = useState(false);
+  const [isLoadingActive, setIsLoadingActive] = useState(false);
 
   const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartedRegister(true);
@@ -79,6 +82,7 @@ export default function EditProdile() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (editMode) {
+      setIsLoadingActive(true);
       const data = new FormData(event.currentTarget);
         if((isGoogle && data.get('username') && data.get('firstname') && data.get('lastname')) ||
             (!isGoogle && data.get('username') && data.get('firstname') && data.get('lastname') && data.get('email') && data.get('password'))){
@@ -91,6 +95,8 @@ export default function EditProdile() {
           };
           updateById(userId, changedUser).then(() => {
             setEditMode(false);
+          }).finally(() => {
+            setIsLoadingActive(false);
           });
         }
     } else {
@@ -106,6 +112,11 @@ export default function EditProdile() {
     <ThemeProvider theme={SignUpTheme}>
       <div className="signupcard">
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
+      <LoadingOverlay
+        active={isLoadingActive}
+        spinner
+        text='Signing up...'
+        > 
         <Card className='mainCard' variant="outlined">
         <Container component="main" maxWidth="xs">
           <Box
@@ -232,6 +243,7 @@ export default function EditProdile() {
           </Box>
         </Container>
         </Card>
+        </LoadingOverlay>
       </Grid>
       </div>
     </ThemeProvider>

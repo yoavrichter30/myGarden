@@ -18,6 +18,8 @@ import AuthContext from '../../auth/AuthContext.tsx';
 import apiClient from '../../services/api-client.ts';
 import GoogleIcon from "@mui/icons-material/Google";
 import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
+import LoadingOverlay from 'react-loading-overlay-ts';
+import Alert from '@mui/material/Alert';
 
 const SignInTheme = createTheme({
   ...baseTheme,
@@ -30,6 +32,8 @@ export default function SignIn() {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [startedRegister, setStartedRegister] = useState(false);
+  const [isLoadingActive, setIsLoadingActive] = useState(false);
+  const [isErrorAppear, setIsErrorAppear] = useState(false);
 
   const handleEmailchange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartedRegister(true);
@@ -44,31 +48,40 @@ export default function SignIn() {
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeRes: CodeResponse) => {
+      setIsLoadingActive(true);
       const { data } = await apiClient.post("/auth/google", codeRes);
       localStorage.setItem('userId', data.id);
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       setUser(JSON.stringify({...data}));
+      setIsLoadingActive(false);
       navigate('/explorePage');
     },
   });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    
     event.preventDefault();
+    setIsLoadingActive(true);
     const data = new FormData(event.currentTarget);
     if (data.get('email') && data.get('password') ){
       const user: IUser = {
         email: data.get('email')?.toString(),
         password: data.get('password')?.toString()
       };
-      const res = await login(user);
+      login(user).then((res) => {
       localStorage.setItem('userId', res.id);
       localStorage.setItem('userName', res.username);
       localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
       setUser(JSON.stringify({...res}));
-      console.log('Updated default token');
       navigate('/explorePage');
+      }).catch((err) => {
+        console.log(err);
+        setIsErrorAppear(true);
+      }).finally(() => {
+        setIsLoadingActive(false);
+      });
     }
   };
 
@@ -76,7 +89,11 @@ export default function SignIn() {
     <ThemeProvider theme={SignInTheme}>
             <div  className="signincard">
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
-       
+      <LoadingOverlay
+      active={isLoadingActive}
+      spinner
+      text='Signing in...'
+    >   
     <Card className='mainCard' variant="outlined">
       <Container component="main" maxWidth="xs">
         <Box
@@ -87,6 +104,10 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
+          { !isErrorAppear ? <></> : <Alert severity="error">
+            Error Signing in
+          </Alert>
+          }
           <GrassOutlinedIcon color="primary" sx={{ fontSize: '7vw' }} />
           <Typography component="h1" variant="h5">
             MyGarden
@@ -147,6 +168,7 @@ export default function SignIn() {
         </Box>
       </Container>
     </Card>
+    </LoadingOverlay>
       </Grid>
 </div>
     </ThemeProvider>

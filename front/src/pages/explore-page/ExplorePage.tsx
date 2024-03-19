@@ -9,6 +9,7 @@ import { explore } from '../../services/plant-service.ts';
 import { IUser } from '../../services/user-service.ts';
 import AuthContext from '../../auth/AuthContext.tsx';
 import apiClient from '../../services/api-client.ts';
+import LoadingOverlay from 'react-loading-overlay-ts';
 
 const ExplorePageTheme = createTheme({
   ...baseTheme,
@@ -22,13 +23,23 @@ async function fetchPlants(): Promise<IPlant> {
 export default function ExplorePage() {
   const [plants, setPlants] = useState<ExplorePlantData[]>([]);
   const {user, setUser} = useContext(AuthContext);
+  const [isLoadingActive, setIsLoadingActive] = useState(false);
 
   useEffect(() => {
-    fetchPlants().then((plants) => setPlants(plants.data));
+    setIsLoadingActive(true)
+    fetchPlants().then((plants) => {
+      setPlants(plants.data);
+      setIsLoadingActive(false)
+    });
   }, []);
 
   return (
-    <ThemeProvider theme={ExplorePageTheme}>        
+    <ThemeProvider theme={ExplorePageTheme}>
+      <LoadingOverlay
+        active={isLoadingActive}
+        spinner
+        text='Signing up...'
+        >         
       <Grid container alignItems="center" justifyContent="center"  spacing={2} style={{ flexDirection: 'column' }}>
         {plants.map((plant, index: number) => (
           <Grid item xs={8} sm={8} md={8} lg={8} key={index}>
@@ -40,6 +51,7 @@ export default function ExplorePage() {
           </Grid>
         ))}
       </Grid>
+      </LoadingOverlay>
     </ThemeProvider>
   );
 }
