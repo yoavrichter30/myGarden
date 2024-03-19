@@ -17,6 +17,23 @@ export class PostsController extends BaseController<IPost> {
             res.status(500).json({ message: err.message });
         }
     }
+
+    async updatePostById(req: Request, res: Response){
+        const id = req.params.id;
+        const updatedProps = req.body as IPost;
+
+        if(!updatedProps.plantName && !updatedProps.imageUrl && !updatedProps.description){
+            throw new Error("Missing params");
+        }
+
+        const updatedPost = await postSchema.findByIdAndUpdate(id, updatedProps, { new: true })
+
+        if (!updatedPost) {
+            throw new Error("Couldn't find requested user");
+        }
+
+        res.status(200).send();
+    }
 }
 
 // class PostsController extends BaseController<IPost>{

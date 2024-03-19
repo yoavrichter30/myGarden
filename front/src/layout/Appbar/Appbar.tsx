@@ -14,6 +14,50 @@ import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import SearchGarden from '../../components/SearchGarden.tsx';
+import AuthContext from '../../auth/AuthContext.tsx';
+import { useContext } from 'react';
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  width: '100%',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    [theme.breakpoints.up('sm')]: {
+      width: '15ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
+}));
 
 const theme = createTheme({
   ...baseTheme,
@@ -21,6 +65,8 @@ const theme = createTheme({
 });
 
 export default function SearchAppBar() {
+  const {user, setUser} = useContext(AuthContext);
+  
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -36,10 +82,22 @@ export default function SearchAppBar() {
 
   const Signout = () => {
     handleMenuClose();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    setUser({});
     routeSignin();
   }
 
   const menuId = 'primary-search-account-menu';
+
+  let navigate = useNavigate(); 
+  const routeGarden = () => routeChange('/gardenPage');
+  const routeExplore = () => routeChange('/explorePage');
+  const routeSignin = () => routeChange('/signIn');
+  const routeProfile = () => routeChange('/editProfile');
+
+  const routeChange = (path: string) => navigate(path);
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -56,18 +114,10 @@ export default function SearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={routeProfile}>Profile</MenuItem>
       <MenuItem onClick={Signout}>Signout</MenuItem>
     </Menu>
   );
-
-  let navigate = useNavigate(); 
-  const routeGarden = () => routeChange('/gardenPage');
-  const routeExplore = () => routeChange('/explorePage');
-  const routeSignin = () => routeChange('/Signin');
-  const routeProfile = () => routeChange('/gardenPage');
-
-  const routeChange = (path: string) => navigate(path);
 
   return (
     <ThemeProvider theme={theme}>

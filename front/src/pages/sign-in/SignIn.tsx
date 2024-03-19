@@ -11,14 +11,21 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "./SignIn.css"
 import baseTheme from '../../theme.ts';
 import Box from '@mui/material/Box';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { IUser, login } from '../../services/user-service.ts';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../auth/AuthContext.tsx';
+import apiClient from '../../services/api-client.ts';
+import GoogleIcon from "@mui/icons-material/Google";
+import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
 
 const SignInTheme = createTheme({
   ...baseTheme,
 });
 
 export default function SignIn() {
+  let navigate = useNavigate();
+  const {user, setUser} = useContext(AuthContext);
 
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
@@ -34,6 +41,18 @@ export default function SignIn() {
     setPasswordInput(event.target.value);
   };
 
+  const handleGoogleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (codeRes: CodeResponse) => {
+      const { data } = await apiClient.post("/auth/google", codeRes);
+      localStorage.setItem('userId', data.id);
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      setUser(JSON.stringify({...data}));
+      navigate('/explorePage');
+    },
+  });
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,7 +62,12 @@ export default function SignIn() {
         password: data.get('password')?.toString()
       };
       const res = await login(user);
-      console.log(res);
+      localStorage.setItem('userId', res.id);
+      localStorage.setItem('accessToken', res.accessToken);
+      localStorage.setItem('refreshToken', res.refreshToken);
+      setUser(JSON.stringify({...res}));
+      console.log('Updated default token');
+      navigate('/explorePage');
     }
   };
 
@@ -103,6 +127,14 @@ export default function SignIn() {
             >
               Sign In
             </Button>
+            <Button
+            onClick={handleGoogleLogin}
+            fullWidth
+            variant="outlined"
+            startIcon={<GoogleIcon />}
+          >
+            Continue with Google
+          </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/SignUp" variant="body2" underline="hover" className='signinRedirectionLink'>

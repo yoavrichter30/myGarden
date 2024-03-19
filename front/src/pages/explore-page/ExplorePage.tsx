@@ -3,21 +3,25 @@ import baseTheme from '../../theme.ts';
 // import "./ExplorePage.css"
 import ExplorePlantCard from '../../components/ExplorePlantCard.tsx';
 import Grid from '@mui/material/Grid';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ExplorePlant, ExplorePlantData } from './explorePlantType.ts';
+import { explore } from '../../services/plant-service.ts';
+import { IUser } from '../../services/user-service.ts';
+import AuthContext from '../../auth/AuthContext.tsx';
+import apiClient from '../../services/api-client.ts';
 
 const ExplorePageTheme = createTheme({
   ...baseTheme,
 });
 
-async function fetchPlants(): Promise<ExplorePlant> {
-  const response = await fetch('http://localhost:8080/plants/explore');
-  const plants = await response.json();
-  return plants;
+async function fetchPlants(): Promise<IPlant> {
+  const response = await explore();
+  return response;
 }
 
 export default function ExplorePage() {
   const [plants, setPlants] = useState<ExplorePlantData[]>([]);
+  const {user, setUser} = useContext(AuthContext);
 
   useEffect(() => {
     fetchPlants().then((plants) => setPlants(plants.data));

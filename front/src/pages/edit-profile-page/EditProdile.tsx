@@ -7,13 +7,12 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 import { Avatar, Card } from '@mui/material';
-import { useState } from 'react';
-import "./SignUp.css"
+import { useEffect, useState } from 'react';
+import "./EditProdile.css"
 import Box from '@mui/material/Box';
-import { IUser } from '../../services/user-service.ts';
+import { IUser, getUserById, updateById } from '../../services/user-service.ts';
 import { register } from '../../services/user-service.ts';
 import { useNavigate } from 'react-router-dom';
-
 
 const SignUpTheme = createTheme({
   ...baseTheme,
@@ -21,16 +20,36 @@ const SignUpTheme = createTheme({
 
 const getInitials = (first: string, last: string) => `${first.charAt(0).toUpperCase()}${last.charAt(0).toUpperCase()}`;
 
-export default function SignUp() {
+async function getUser(): Promise<IUser> {
+  const response = await getUserById(localStorage.getItem('userId'));
+  return response;
+}
+
+export default function EditProdile() {
   let navigate = useNavigate();
+
+  useEffect(() => {
+    getUser().then((user: IUser) => {
+      setUserId(user._id);
+      setFirstNameInput(user.firstName);
+      setLastNameInput(user.lastName);
+      setUsernameInput(user.username);
+      setEmailInput(user.email);
+      setPasswordInput(user.password);
+      setIsGoogle(user.isGoogleUser);
+    });
+  }, []);
+
+  const [editMode, setEditMode] = useState(false);
   
+  const [userId, setUserId] = useState('');
   const [startedRegister, setStartedRegister] = useState(false);
   const [firstNameInput, setFirstNameInput] = useState('');
   const [lastNameInput, setLastNameInput] = useState('');
   const [usernameInput, setUsernameInput] = useState('');
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
-  const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
+  const [isGoogle, setIsGoogle] = useState(false);
 
   const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartedRegister(true);
@@ -57,26 +76,30 @@ export default function SignUp() {
     setPasswordInput(event.target.value);
   };
 
-  const handleConfirmPasswordchange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setStartedRegister(true);
-    setConfirmPasswordInput(event.target.value);
-  };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    if (data.get('email') && data.get('password') && data.get('firstname') && data.get('lastname')){
-      const newUser: IUser = {
-        email: data.get('email')?.toString(),
-        password: data.get('password')?.toString(),
-        username: data.get('username')?.toString(),
-        firstName: data.get('firstname')?.toString(),
-        lastName: data.get('lastname')?.toString()
-      };
-      register(newUser).then(() => {
-      navigate('/signIn');
-      });
+    if (editMode) {
+      const data = new FormData(event.currentTarget);
+        if((isGoogle && data.get('username') && data.get('firstname') && data.get('lastname')) ||
+            (!isGoogle && data.get('username') && data.get('firstname') && data.get('lastname') && data.get('email') && data.get('password'))){
+          const changedUser: IUser = {
+            ...(!isGoogle && {email: data.get('email')?.toString()}),
+            ...(!isGoogle && {password: data.get('password')?.toString()}),
+            username: data.get('username')?.toString(),
+            firstName: data.get('firstname')?.toString(),
+            lastName: data.get('lastname')?.toString()
+          };
+          updateById(userId, changedUser).then(() => {
+            setEditMode(false);
+          });
+        }
+    } else {
+      handleEdit();
     }
+  };
+
+  const handleEdit = () => {
+    setEditMode(true);
   };
 
   return (
@@ -95,19 +118,20 @@ export default function SignUp() {
           >
             <Avatar>{getInitials(firstNameInput, lastNameInput)}</Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+            Gardner Card
             </Typography>
             <Box component="form" noValidate sx={{ mt: 3 }} onSubmit={handleSubmit}> 
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    disabled={!editMode}
                     autoComplete="given-name"
                     name="firstname"
                     required
                     fullWidth
                     color="secondary"
                     id="firstname"
-                    label="First Name"
+                    value={firstNameInput}
                     autoFocus
                     onChange={handleFirstNameChange}
                     error={startedRegister && firstNameInput.length < 3}
@@ -115,12 +139,13 @@ export default function SignUp() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    disabled={!editMode}
                     required
                     fullWidth
                     color="secondary"
                     id="lastname"
-                    label="Last Name"
                     name="lastname"
+                    value={lastNameInput}
                     autoComplete="family-name"
                     onChange={handleLastNameChange}
                     error={startedRegister && lastNameInput.length < 3}
@@ -128,59 +153,53 @@ export default function SignUp() {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    disabled={!editMode}
                     required
                     fullWidth
                     color="secondary"
                     id="username"
-                    label="User Name"
                     name="username"
                     autoComplete="family-name"
+                    value={usernameInput}
                     onChange={handleUsernamechange}
                     error={startedRegister && usernameInput.length < 3}
                   />
                 </Grid>
                 <Grid item xs={12}>
+                { isGoogle ? <></> :
                   <TextField
+                    disabled={!editMode}
                     required
                     fullWidth
                     color="secondary"
                     id="email"
-                    label="Email Address"
                     name="email"
                     autoComplete="email"
+                    value={emailInput}
                     onChange={handleEmailchange}
                     error={startedRegister && emailInput.length < 3}
                   />
+                }
                 </Grid>
                 <Grid item xs={12} sm={6}>
+                  { isGoogle ? <></> :
                   <TextField
+                    disabled={!editMode}
                     required
                     fullWidth
                     color="secondary"
                     name="password"
-                    label="Password"
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                    value={passwordInput}
                     onChange={handlePasswordchange}
                     error={startedRegister && passwordInput.length < 3}
                   />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    color="secondary"
-                    name="confirmpassword"
-                    label="Confirm Password"
-                    type="password"
-                    id="confirmpassword"
-                    onChange={handleConfirmPasswordchange}
-                    error={ passwordInput !== confirmPasswordInput || confirmPasswordInput.length < 3}
-                  />
+                }
                 </Grid>
               </Grid>
-              <Button
+              { editMode ? <Button
                 color="primary"
                 className='signupBtn'
                 type="submit"
@@ -188,15 +207,27 @@ export default function SignUp() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                Update
               </Button>
-              <Grid container justifyContent="flex-end">
+                : <Button
+                color="primary"
+                className='signupBtn'
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Edit
+              </Button>
+              }
+              { false ? <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link className='signupRedirectionLink' href="/SignIn" variant="body2" underline="hover">
                     Already have an account? Sign in
                   </Link>
                 </Grid>
-              </Grid>
+              </Grid> : <></>
+              }
             </Box>
           </Box>
         </Container>

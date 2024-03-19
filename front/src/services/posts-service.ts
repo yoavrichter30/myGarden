@@ -29,4 +29,15 @@ export const createPost = (post: IPost) => {
     })
 }
 
+export const fetchPostsByUser = (userId: String) => {
+    return new Promise<IPost>((resolve, reject) => {
+        apiClient.get(`/posts/byUser/${userId}`).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        })
+    });
+}
+
 export default { createPost }
