@@ -9,6 +9,7 @@ import { IUser } from '../../services/user-service.ts';
 import AuthContext from '../../auth/AuthContext.tsx';
 import apiClient from '../../services/api-client.ts';
 import LoadingOverlay from 'react-loading-overlay-ts';
+import { IPlant } from '../../services/plant-service.ts';
 
 const ExplorePageTheme = createTheme({
   ...baseTheme,
