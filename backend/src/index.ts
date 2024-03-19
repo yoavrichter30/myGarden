@@ -79,8 +79,8 @@ if(process.env.NODE_ENV !== 'PRODUCTION'){
   init().then((app)=> http.createServer(app).listen(process.env.PORT));
 } else {
   const httpOptions = {
-    key: fs.readFileSync('./client-key.pem'),
-    cert: fs.readFileSync('./client-cert.pem'),
+    key: fs.readFileSync('/certs/client-key.pem'),
+    cert: fs.readFileSync('/certs/client-cert.pem'),
   };
 
   init().then((app)=> https.createServer(httpOptions, app).listen(process.env.PORT));
