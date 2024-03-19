@@ -34,7 +34,7 @@ const NewPostModal = ({ open, handleClose, isNew, post }: { open: any, handleClo
     description: '',
     imageUrl: null,
   });
-  const imgPreviewUrl = (url: string, imgOnServer: boolean) => imgOnServer ? url : URL.createObjectURL(url);
+  const imgPreviewUrl = (url: string, imgOnServer: boolean) => imgOnServer ? url : URL.createObjectURL(new Blob([url], { type : 'plain/text' }));
 
   useEffect(() => {
     setIsImgOnServer(false);
@@ -48,7 +48,7 @@ const NewPostModal = ({ open, handleClose, isNew, post }: { open: any, handleClo
     }
   }, [post, isNew]);
 
-  const [isImgOnServer, setIsImgOnServer] = useState<Boolean>();
+  const [isImgOnServer, setIsImgOnServer] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
