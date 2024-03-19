@@ -123,7 +123,7 @@ export default function SearchAppBar() {
   return (
     <ThemeProvider theme={theme}>
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="garden">
+      <AppBar position="static" color="primary">
         <Toolbar>
         <GrassOutlinedIcon sx={{ fontSize: '3vw' }} />
         <Button onClick={routeGarden}

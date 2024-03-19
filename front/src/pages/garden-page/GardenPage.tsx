@@ -8,6 +8,7 @@ import { Button } from '@mui/material';
 import { fetchPostsByUser } from '../../services/posts-service.ts';
 import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { IUser } from '../../services/user-service.ts';
 
 const GardenPageTheme = createTheme({
   ...baseTheme,

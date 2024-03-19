@@ -32,13 +32,13 @@ export default function EditProdile() {
 
   useEffect(() => {
     getUser().then((user: IUser) => {
-      setUserId(user._id);
-      setFirstNameInput(user.firstName);
-      setLastNameInput(user.lastName);
-      setUsernameInput(user.username);
-      setEmailInput(user.email);
-      setPasswordInput(user.password);
-      setIsGoogle(user.isGoogleUser);
+      setUserId(user._id ?? '');
+      setFirstNameInput(user.firstName ?? '');
+      setLastNameInput(user.lastName ?? '');
+      setUsernameInput(user.username ?? '');
+      setEmailInput(user.email ?? '');
+      setPasswordInput(user.password ?? '');
+      setIsGoogle(user.isGoogleUser ?? false);
     });
   }, []);
 

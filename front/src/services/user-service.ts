@@ -8,7 +8,8 @@ export interface IUser {
     firstName?: string,
     lastName?: string,
     accessToken?: string,
-    refreshToken?: string
+    refreshToken?: string,
+    isGoogleUser?: boolean,
 }
 
 export const register = (user: IUser) => {
