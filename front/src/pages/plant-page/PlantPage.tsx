@@ -93,7 +93,7 @@ export default function PlantPage({postId}) {
           ))}
 
           <Grid item xs={8} sm={8} md={8} lg={8}  width="100%">
-          <Card sx={{ display: 'flex'}} style={{ width: '100%', borderColor: baseTheme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
+          <Card sx={{ display: 'flex'}} style={{ width: '100%', borderColor: baseTheme.palette.primary.main, borderWidth: '3px', borderStyle: 'solid' }}>
            {/* <Box sx={{ display: 'flex', flexDirection: 'column' , flexWrap: 'wrap' }}> */}
             <TextField
               label="Add new comment"

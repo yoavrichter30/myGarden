@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 
 const ExplorePlantCard = ({ title, description, imageUrl }: {title: string, description: string, imageUrl:string}) => {
   return (
-    <Card sx={{ display: 'flex'}} style={{ borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
+    <Card sx={{ display: 'flex'}} style={{ borderColor: theme.palette.primary.main, borderWidth: '3px', borderStyle: 'solid' }}>
       <CardMedia
         component="img"
         alt="Image"
