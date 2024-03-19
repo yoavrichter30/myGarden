@@ -11,9 +11,6 @@ const baseTheme = createTheme({
     secondary: {
       main: "#bdbdbd"
     },
-    garden: {
-      main: "#A6CF98"
-    }
   }
 });
 

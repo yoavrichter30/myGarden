@@ -10,7 +10,7 @@ import { IComment } from '../services/posts-service.ts';
 
 const PlantReview = ({ comment }: {comment: IComment}) => {
   return (
-    <Card sx={{ display: 'flex'}} style={{ width: '100%', borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
+    <Card sx={{ display: 'flex'}} style={{ width: '100%', borderColor: theme.palette.primary.main, borderWidth: '3px', borderStyle: 'solid' }}>
        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Box sx={{
