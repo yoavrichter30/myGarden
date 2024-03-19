@@ -140,7 +140,7 @@ const handleEditSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
           <Box sx={style} style={{ borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography component="div" variant="h5" align="left" >          
-              New Plant Post
+              {isNew ? 'New' : 'Edit'} Plant Post
               </Typography> 
                    
               <TextField

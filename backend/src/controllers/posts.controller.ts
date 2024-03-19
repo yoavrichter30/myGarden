@@ -18,6 +18,18 @@ export class PostsController extends BaseController<IPost> {
         }
     }
 
+    async deletePost(req: Request, res: Response) {
+        const id = req.params.id;
+        try {
+            console.log(req.params);
+            const deletedPost = await postSchema.findByIdAndDelete(id);
+
+            res.send(deletedPost);
+        } catch (err: any) {
+            res.status(500).json({ message: err.message });
+        }
+    }
+
     async updatePostById(req: Request, res: Response){
         const id = req.params.id;
         const updatedProps = req.body as IPost;
