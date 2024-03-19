@@ -86,7 +86,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         aria-describedby="modal-modal-description"
       >
         <Box component="form" noValidate sx={{ mt: 3 }} onSubmit={handleSubmit}>
-          <Box sx={style} style={{ borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
+          <Box sx={style} style={{ borderColor: theme.palette.primary.main, borderWidth: '3px', borderStyle: 'solid' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography component="div" variant="h5" align="left" >          
               New Plant Post
