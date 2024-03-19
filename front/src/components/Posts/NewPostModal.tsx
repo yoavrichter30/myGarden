@@ -3,14 +3,13 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 import theme from '../../theme.ts';
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useRef, useState, useEffect } from 'react'
 import { uploadPhoto } from '../../services/file-service.ts'
-import { createPost, IPost } from '../../services/posts-service.ts'
+import { createPost, IPost,updatePostById } from '../../services/posts-service.ts'
 import { useNavigate } from 'react-router-dom';
 
 const GardenPageTheme = createTheme({
@@ -28,20 +27,53 @@ const style = {
     p: 4,
 };
 
-const NewPost = ({ username }: {username: string}) => {
+const NewPostModal = ({ open, handleClose, isNew, post }: { open: any, handleClose: any, isNew: boolean, post: IPost }) => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    plantName: '',
+    description: '',
+    imageUrl: null,
+  });
+  const imgPreviewUrl = (url: string, imgOnServer: boolean) => imgOnServer ? url : URL.createObjectURL(url);
 
-  const [open, setOpen] = useState(false);
-  const [imgSrc, setImgSrc] = useState<File>()
+  useEffect(() => {
+    setIsImgOnServer(false);
+    if (!isNew) {
+      setIsImgOnServer(true);
+      setIsUpdateImg(false);
+      setFormData({
+        plantName: post?.plantName,
+        description: post?.description,
+        imageUrl: post?.imageUrl,
+      });
+      // setImgSrc(post?.imageUrl)
+    }
+  }, [post, isNew]);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [imgSrc, setImgSrc] = useState<File>();
+  const [isImgOnServer, setIsImgOnServer] = useState<Boolean>();
+  const [isUpdateImg, setIsUpdateImg] = useState<Boolean>();
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const imgSelected = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value)
     if (e.target.files && e.target.files.length > 0) {
-        setImgSrc(e.target.files[0])
+        setIsImgOnServer(false);
+        setImgSrc(e.target.files[0]);
+        setIsUpdateImg(true);
+        setFormData((prevData) => ({
+          ...prevData,
+          imageUrl: ((e.target.files)![0]),
+        }));
     }
 }
 const selectImg = () => {
@@ -49,36 +81,55 @@ const selectImg = () => {
     fileInputRef.current?.click()
 }
 
-const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => isNew ?
+  handleCreateSubmit(event) : handleEditSubmit(event);
+
+const handleCreateSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   const data = new FormData(event.currentTarget);
   if (data.get('plantName')?.toString() && data.get('description')?.toString()) {
-    const url = await uploadPhoto(imgSrc!);
+    const url = await uploadPhoto(formData.imageUrl!);
     console.log("upload returned:" + url);
     const post: IPost = {
-      username: username,
+      username: localStorage.getItem("userName")!,
       plantName: data.get('plantName')?.toString(),
       imageUrl: url,
       description: data.get('description')?.toString(),
       comments: []
     } 
-    const res = await createPost(post)
+    
+    await createPost(post)
     navigate(0);
   }
 };
 
+//  TODO: call this function
+const handleEditSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  if (data.get('plantName')?.toString() && data.get('description')?.toString()) {
+    // if(!isImgOnServer) {
+    //   const url = await uploadPhoto(formData.imageUrl!);
+    //   console.log("upload returned:" + url);
+    // }
+    const url = isImgOnServer ? post.imageUrl : await uploadPhoto(formData.imageUrl!);
+    const newPost: IPost = {
+      ...post,
+      username: localStorage.getItem("userName")!,
+      plantName: data.get('plantName')?.toString(),
+      imageUrl: url,
+      description: data.get('description')?.toString(),
+    } 
+  
+    await updatePostById(newPost._id!, newPost)
+    navigate(0);
+    // TODO: Send edit post
+    // await createPost(post)
+  }
+};
   return (
     <ThemeProvider theme={GardenPageTheme}>        
-      <Button
-        onClick={handleOpen}
-        component="label"
-        role={undefined}
-        variant="contained"
-        tabIndex={-1}
-        startIcon={<CloudUploadIcon />}
-      >
-        New post
-      </Button>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -99,6 +150,8 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
                 color="secondary"
                 id="plantName"
                 label="Plant name"
+                value={formData.plantName}
+                onChange={handleChange}
               />
               <TextField
                 name="description"
@@ -107,13 +160,16 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
                 color="secondary"
                 id="description"
                 label="Description"
+                value={formData.description}
+                onChange={handleChange}
               />
 
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-            {imgSrc && <img src={URL.createObjectURL(imgSrc)} onClick={selectImg} style={{ height: "150px", width: "150px" }} className="img-fluid" />}
+              
+            {formData.imageUrl && <img src={imgPreviewUrl(formData.imageUrl,isImgOnServer)} onClick={selectImg} style={{ height: "150px", width: "150px" }} className="img-fluid" />}
             <input style={{ display: "none" }} ref={fileInputRef} type="file" onChange={imgSelected}></input>
-            {!imgSrc && <Button type="button" onClick={selectImg}> select image</Button>}
+            {!formData.imageUrl && <Button type="button" onClick={selectImg}> select image</Button>}
             </Box>
             <Button style={{ marginTop: '20px'}} type="submit">
                     Post
@@ -127,4 +183,4 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   );
 };
 
-export default NewPost;
+export default NewPostModal;

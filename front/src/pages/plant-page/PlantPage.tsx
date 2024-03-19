@@ -56,7 +56,7 @@ export default function PlantPage({postId}) {
 
   const handleAddComment = () => {
     if (inputValue.trim() !== '') {
-      const username = JSON.parse(localStorage.getItem('userName')!);
+      const username = localStorage.getItem('userName')!;
 
       const newComment: IComment = {
         username,

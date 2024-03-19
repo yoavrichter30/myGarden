@@ -52,7 +52,6 @@ export const fetchPostsById = (_id: String) => {
     });
 }
 
-
 export const updatePostById = (_id: String, updatedPost: IPost) => {
     return new Promise<IPost>((resolve, reject) => {
         apiClient.put(`/posts/${_id}`, updatedPost).then((response) => {
