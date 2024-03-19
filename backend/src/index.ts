@@ -68,13 +68,13 @@ const init = (): Promise<Express> => {
       app.use(
         "/assets",
         express.static(
-          path.resolve(__dirname, "..", "front/dist/assets")
+          path.resolve(__dirname, "..", "..", "front/dist/assets")
         )
       );
 
       app.get("/", (req, res) =>
         res.sendFile(
-          path.resolve(__dirname, "..", "front/dist", "index.html")
+          path.resolve(__dirname, "..", "..", "front/dist", "index.html")
         )
       );
 
