@@ -22,7 +22,7 @@ const PlantCard = ({ post }: {post: IPost}) => {
   const handleCloseEditModal = () => setOpenEditModal(false);
 
     return (
-    <Card sx={{ display: 'flex'}} style={{ width: '100%', borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
+    <Card sx={{ display: 'flex'}} style={{ width: '100%', borderColor: theme.palette.primary.main, borderWidth: '3px', borderStyle: 'solid' }}>
       <CardMedia
         component="img"
         alt="Image"
