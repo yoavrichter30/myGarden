@@ -33,7 +33,7 @@ export default function PublicLayout() {
         <Route path="/explorePage" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><ExplorePage /></RequireAuth>}/>
         <Route path="/editProfile" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><EditProfile /></RequireAuth>}/>
 
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><ExplorePage/></RequireAuth>}/>
         <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />
         {/* <Route path="/profile" element={<SignUp />} /> */}
