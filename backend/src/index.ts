@@ -6,12 +6,14 @@ import PlantsRoute from "./routes/plants.route";
 import PostsRoute from "./routes/posts.route";
 import usersRoute from "./routes/users.route";
 import http from 'http';
+import https from 'https';
 import bodyParser from "body-parser";
 import AuthRequest from './middlewares/auth_middleware';
 import cors from "cors";
 import FileRoute from "./routes/file.route";
 import swaggerUI from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
+import fs from "fs";
 
 dotenv.config();
 
@@ -73,6 +75,13 @@ const init = (): Promise<Express> => {
 
 export default init;
 
-if(process.env.NODE_ENV !== 'TEST'){
+if(process.env.NODE_ENV !== 'PRODUCTION'){
   init().then((app)=> http.createServer(app).listen(process.env.PORT));
+} else {
+  const httpOptions = {
+    key: fs.readFileSync('./client-key.pem'),
+    cert: fs.readFileSync('./client-cert.pem'),
+  };
+
+  init().then((app)=> https.createServer(httpOptions, app).listen(process.env.PORT));
 }
