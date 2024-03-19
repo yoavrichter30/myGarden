@@ -27,7 +27,7 @@ const style = {
     p: 4,
 };
 
-const NewPostModal = ({ open, handleClose, isNew, post }: { open: any, handleClose: any, isNew: boolean, post: IPost }) => {
+const NewPostModal = ({ open, handleClose, isNew, post }: any) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     plantName: '',
