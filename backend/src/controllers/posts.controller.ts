@@ -21,7 +21,8 @@ export class PostsController extends BaseController<IPost> {
     async updatePostById(req: Request, res: Response){
         const id = req.params.id;
         const updatedProps = req.body as IPost;
-
+        
+        console.log("updatePostById")
         if(!updatedProps.plantName && !updatedProps.imageUrl && !updatedProps.description){
             throw new Error("Missing params");
         }

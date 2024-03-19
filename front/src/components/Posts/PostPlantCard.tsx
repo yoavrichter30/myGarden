@@ -8,13 +8,18 @@ import theme from '../../theme';
 import { useNavigate } from 'react-router-dom';
 import { IPost } from '../../services/posts-service';
 import EditIcon from '@mui/icons-material/Edit';
-
+import { ChangeEvent, useRef, useState } from 'react'
+import NewPostModal from './NewPostModal';
 
 const PlantCard = ({ post }: {post: IPost}) => {
   const navigate = useNavigate();
   const routeChange = (path: string) => navigate(path);
   const routePlantPage = (_id: string) => routeChange(`/plantPage?postId=${_id}`);
   const editPost = () => { }
+
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const handleOpenEditModal = () => setOpenEditModal(true);
+  const handleCloseEditModal = () => setOpenEditModal(false);
 
     return (
     <Card sx={{ display: 'flex'}} style={{ width: '100%', borderColor: theme.palette.garden.main, borderWidth: '3px', borderStyle: 'solid' }}>
@@ -36,7 +41,7 @@ const PlantCard = ({ post }: {post: IPost}) => {
             <Typography style={{ paddingLeft: '10px' , paddingTop: '10px' }} variant="subtitle2" color="text.secondary" component="div" align="right">
             by {post.username}
             </Typography>
-            <IconButton aria-label="edit" size="small" color="primary" onClick={editPost} >
+            <IconButton aria-label="edit" size="small" color="primary" onClick={handleOpenEditModal} >
               <EditIcon/>
             </IconButton>     
           </Box>
@@ -47,7 +52,10 @@ const PlantCard = ({ post }: {post: IPost}) => {
           {post.comments?.length} Comments
           </Typography>
         </CardContent>
-        
+        {openEditModal && <NewPostModal open={openEditModal} handleClose={handleCloseEditModal} isNew={false} post={post} />
+}
+
+
       </Box>
     </Card>
   );

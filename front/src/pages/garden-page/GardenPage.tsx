@@ -2,12 +2,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 // import "./GardenPage.css"
 import PlantCard from '../../components/Posts/PostPlantCard.tsx';
-import NewPost from '../../components/Posts/NewPostModal.tsx';
+import NewPostModal from '../../components/Posts/NewPostModal.tsx';
 import Grid from '@mui/material/Grid';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import { fetchPostsByUser } from '../../services/posts-service.ts';
 import Typography from '@mui/material/Typography';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const GardenPageTheme = createTheme({
   ...baseTheme,
@@ -21,6 +22,14 @@ async function getPostByUser(username: String): Promise<IUser> {
 export default function GardenPage({ username }) {
   
   const [posts, setPosts] = useState([]);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  
+  const handleOpenAddModal = () => setOpenAddModal(true);
+
+  const handleCloseAddModal = () => setOpenAddModal(false);
+
+
+
 
   useEffect(() => {
     getPostByUser(username).then((posts: IPost[]) => {
@@ -49,7 +58,17 @@ export default function GardenPage({ username }) {
 
       {localStorage.getItem("userName") == username &&
         <div style={{ marginTop: '20px', marginBottom: '20px' }} >
-        <NewPost username={username}/>
+          <Button
+            onClick={handleOpenAddModal}
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+          >
+            New post
+          </Button>
+          <NewPostModal open={openAddModal} handleClose={handleCloseAddModal} isNew={true} />
         </div>
       }
       

@@ -51,6 +51,7 @@ export default function SignIn() {
       setIsLoadingActive(true);
       const { data } = await apiClient.post("/auth/google", codeRes);
       localStorage.setItem('userId', data.id);
+      localStorage.setItem('userName', data.username);
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       setUser(JSON.stringify({...data}));

@@ -218,6 +218,7 @@ const loginWithGoogle = () => {
 
             return response.status(200).send({
                         'id': user._id,
+                        'username': user.username,
                         'accessToken': accessToken,
                         'refreshToken': refreshToken
                     });

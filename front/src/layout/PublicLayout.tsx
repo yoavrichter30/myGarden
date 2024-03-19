@@ -25,7 +25,9 @@ export default function PublicLayout() {
 
   return (    
     <>
-    <SearchAppBar />
+        {Object.keys(user).length > 0 && <SearchAppBar />}
+
+    {/* <SearchAppBar /> */}
     <div style={{ marginTop: '64px' /* Adjust the value based on your navbar height */ }}>
       <Routes>
         <Route path="/gardenPage" element={<RequireAuth redirectTo="/signIn" isAuthenticated={Object.keys(user).length > 0}><GardenPage username={query.get("username")} /></RequireAuth>}/>
