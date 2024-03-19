@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import { IUser } from '../../services/user-service.ts';
 import { register } from '../../services/user-service.ts';
 import { useNavigate } from 'react-router-dom';
+import LoadingOverlay from 'react-loading-overlay-ts';
 
 
 const SignUpTheme = createTheme({
@@ -31,6 +32,7 @@ export default function SignUp() {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
+  const [isLoadingActive, setIsLoadingActive] = useState(false);
 
   const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartedRegister(true);
@@ -63,6 +65,7 @@ export default function SignUp() {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setIsLoadingActive(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (data.get('email') && data.get('password') && data.get('firstname') && data.get('lastname')){
@@ -74,7 +77,9 @@ export default function SignUp() {
         lastName: data.get('lastname')?.toString()
       };
       register(newUser).then(() => {
-      navigate('/signIn');
+        navigate('/signIn');
+      }).finally(() => {
+        setIsLoadingActive(false);
       });
     }
   };
@@ -83,6 +88,11 @@ export default function SignUp() {
     <ThemeProvider theme={SignUpTheme}>
       <div className="signupcard">
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
+      <LoadingOverlay
+        active={isLoadingActive}
+        spinner
+        text='Signing up...'
+        > 
         <Card className='mainCard' variant="outlined">
         <Container component="main" maxWidth="xs">
           <Box
@@ -201,6 +211,7 @@ export default function SignUp() {
           </Box>
         </Container>
         </Card>
+        </LoadingOverlay>
       </Grid>
       </div>
     </ThemeProvider>
