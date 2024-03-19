@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import { fetchPostsByUser } from '../../services/posts-service.ts';
+import Typography from '@mui/material/Typography';
 
 const GardenPageTheme = createTheme({
   ...baseTheme,
@@ -24,14 +25,15 @@ export default function GardenPage({ username }) {
   useEffect(() => {
     getPostByUser(username).then((posts: IPost[]) => {
       setPosts(posts);
-
     });
 
   }, [username]);
 
   return (
     <ThemeProvider theme={GardenPageTheme}>        
-      <Grid container alignItems="center" justifyContent="center"  spacing={2} style={{ flexDirection: 'column' }}>
+    {
+      posts.length > 0 
+      ? <Grid container alignItems="center" justifyContent="center"  spacing={2} style={{ flexDirection: 'column' }}>
         {posts.map((post, index) => (
           <Grid item xs={10} sm={10} md={10} lg={10} key={index} width="100%">
             <PlantCard 
@@ -40,9 +42,17 @@ export default function GardenPage({ username }) {
           </Grid>
         ))}
       </Grid>
-      <div style={{ marginTop: '20px', marginBottom: '20px' }} >
-      <NewPost username={username}/>
-      </div>
+      : <Typography variant="subtitle1" color="text.secondary" component="div"> There aren't posts yet...</Typography>
+
+    } 
+      
+
+      {localStorage.getItem("userName") == username &&
+        <div style={{ marginTop: '20px', marginBottom: '20px' }} >
+        <NewPost username={username}/>
+        </div>
+      }
+      
 
     </ThemeProvider>
   );
