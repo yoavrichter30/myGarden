@@ -79,7 +79,6 @@ const SearchGarden = () => {
     if(value) {
       routeUserGarden(value);
     }
-    // Example: myFunction(value);
   };
   
   return (

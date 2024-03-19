@@ -1,6 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
-// import "./PlantPage.css"
 import PlantCard from '../../components/Posts/PostPlantCard.tsx';
 import Grid from '@mui/material/Grid';
 import PlantReview from '../../components/PlantReview.tsx';

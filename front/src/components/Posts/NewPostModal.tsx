@@ -9,7 +9,7 @@ import baseTheme from '../../theme.ts';
 import theme from '../../theme.ts';
 import { ChangeEvent, useRef, useState, useEffect } from 'react'
 import { uploadPhoto } from '../../services/file-service.ts'
-import { createPost, IPost,updatePostById } from '../../services/posts-service.ts'
+import { createPost, IPost,updatePostById, deletePostById } from '../../services/posts-service.ts'
 import { useNavigate } from 'react-router-dom';
 
 const GardenPageTheme = createTheme({
@@ -40,19 +40,15 @@ const NewPostModal = ({ open, handleClose, isNew, post }: { open: any, handleClo
     setIsImgOnServer(false);
     if (!isNew) {
       setIsImgOnServer(true);
-      setIsUpdateImg(false);
       setFormData({
         plantName: post?.plantName,
         description: post?.description,
         imageUrl: post?.imageUrl,
       });
-      // setImgSrc(post?.imageUrl)
     }
   }, [post, isNew]);
 
-  const [imgSrc, setImgSrc] = useState<File>();
   const [isImgOnServer, setIsImgOnServer] = useState<Boolean>();
-  const [isUpdateImg, setIsUpdateImg] = useState<Boolean>();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -68,8 +64,6 @@ const NewPostModal = ({ open, handleClose, isNew, post }: { open: any, handleClo
     console.log(e.target.value)
     if (e.target.files && e.target.files.length > 0) {
         setIsImgOnServer(false);
-        setImgSrc(e.target.files[0]);
-        setIsUpdateImg(true);
         setFormData((prevData) => ({
           ...prevData,
           imageUrl: ((e.target.files)![0]),
@@ -81,13 +75,15 @@ const selectImg = () => {
     fileInputRef.current?.click()
 }
 
-const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => isNew ?
-  handleCreateSubmit(event) : handleEditSubmit(event);
-
-const handleCreateSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) =>{
   event.preventDefault();
   const data = new FormData(event.currentTarget);
-  if (data.get('plantName')?.toString() && data.get('description')?.toString()) {
+  if (data.get('plantName')?.toString() && data.get('description')?.toString()) { 
+    isNew ? handleCreateSubmit(data) : handleEditSubmit(data);
+  }
+} 
+
+  const handleCreateSubmit = async (data: FormData) => {
     const url = await uploadPhoto(formData.imageUrl!);
     console.log("upload returned:" + url);
     const post: IPost = {
@@ -101,17 +97,8 @@ const handleCreateSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     await createPost(post)
     navigate(0);
   }
-};
 
-//  TODO: call this function
-const handleEditSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  if (data.get('plantName')?.toString() && data.get('description')?.toString()) {
-    // if(!isImgOnServer) {
-    //   const url = await uploadPhoto(formData.imageUrl!);
-    //   console.log("upload returned:" + url);
-    // }
+  const handleEditSubmit = async (data: FormData) => {
     const url = isImgOnServer ? post.imageUrl : await uploadPhoto(formData.imageUrl!);
     const newPost: IPost = {
       ...post,
@@ -123,10 +110,12 @@ const handleEditSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   
     await updatePostById(newPost._id!, newPost)
     navigate(0);
-    // TODO: Send edit post
-    // await createPost(post)
   }
-};
+
+  const deletePost = async () => {
+    await deletePostById(post._id);
+    navigate(0);
+  }
   return (
     <ThemeProvider theme={GardenPageTheme}>        
 
@@ -172,8 +161,13 @@ const handleEditSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
             {!formData.imageUrl && <Button type="button" onClick={selectImg}> select image</Button>}
             </Box>
             <Button style={{ marginTop: '20px'}} type="submit">
-                    Post
+              Post
             </Button>
+            {!isNew &&
+            <Button style={{ marginTop: '20px'}} onClick={deletePost}  color="error">
+            Delete post
+            </Button>
+            }     
 
           </Box>
         </Box>

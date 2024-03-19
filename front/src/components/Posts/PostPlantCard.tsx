@@ -3,12 +3,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import theme from '../../theme';
 import { useNavigate } from 'react-router-dom';
 import { IPost } from '../../services/posts-service';
 import EditIcon from '@mui/icons-material/Edit';
-import { ChangeEvent, useRef, useState } from 'react'
+import { useState } from 'react'
 import NewPostModal from './NewPostModal';
 
 const PlantCard = ({ post }: {post: IPost}) => {
@@ -41,9 +41,11 @@ const PlantCard = ({ post }: {post: IPost}) => {
             <Typography style={{ paddingLeft: '10px' , paddingTop: '10px' }} variant="subtitle2" color="text.secondary" component="div" align="right">
             by {post.username}
             </Typography>
+            { post.username == localStorage.getItem("userName") &&
             <IconButton aria-label="edit" size="small" color="primary" onClick={handleOpenEditModal} >
               <EditIcon/>
-            </IconButton>     
+            </IconButton>       
+            }
           </Box>
           <Typography variant="subtitle1" color="text.secondary" component="div" align="left">
           {post.description}
