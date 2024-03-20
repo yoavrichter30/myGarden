@@ -7,13 +7,15 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 import { Avatar, Card } from '@mui/material';
-import { useState } from 'react';
+import { ChangeEvent, useState, useRef } from 'react';
 import "./SignUp.css"
 import Box from '@mui/material/Box';
 import { IUser } from '../../services/user-service.ts';
 import { register } from '../../services/user-service.ts';
 import { useNavigate } from 'react-router-dom';
 import LoadingOverlay from 'react-loading-overlay-ts';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { uploadPhoto } from '../../services/file-service.ts'
 
 
 const SignUpTheme = createTheme({
@@ -24,6 +26,9 @@ const getInitials = (first: string, last: string) => `${first.charAt(0).toUpperC
 
 export default function SignUp() {
   let navigate = useNavigate();
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isImgOnServer, setIsImgOnServer] = useState<boolean>(false);
   
   const [startedRegister, setStartedRegister] = useState(false);
   const [firstNameInput, setFirstNameInput] = useState('');
@@ -33,6 +38,7 @@ export default function SignUp() {
   const [passwordInput, setPasswordInput] = useState('');
   const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
   const [isLoadingActive, setIsLoadingActive] = useState(false);
+  const [imageUrl, setImageUrl] = useState<File>();
 
   const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartedRegister(true);
@@ -64,17 +70,32 @@ export default function SignUp() {
     setConfirmPasswordInput(event.target.value);
   };
 
+  const selectImg = () => {
+    console.log("Selecting image...")
+    fileInputRef.current?.click()
+  }
+
+  const imgSelected = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value)
+    if (e.target.files && e.target.files.length > 0) {
+        setIsImgOnServer(false);
+        setImageUrl((e.target.files)![0])
+        };
+    }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsLoadingActive(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (data.get('email') && data.get('password') && data.get('firstname') && data.get('lastname')){
+      const url = await uploadPhoto(imageUrl!);
       const newUser: IUser = {
         email: data.get('email')?.toString(),
         password: data.get('password')?.toString(),
         username: data.get('username')?.toString(),
         firstName: data.get('firstname')?.toString(),
-        lastName: data.get('lastname')?.toString()
+        lastName: data.get('lastname')?.toString(),
+        imageUrl: url
       };
       register(newUser).then(() => {
         navigate('/signIn');
@@ -190,6 +211,18 @@ export default function SignUp() {
                   />
                 </Grid>
               </Grid>
+              <Button
+                color="primary"
+                className='addPhotoBtn'
+                fullWidth
+                variant="outlined"
+                sx={{ mt: 1, mb: 0 }}
+                startIcon={<CameraAltIcon />}
+                onClick={selectImg}
+              >
+                {imageUrl?.name ? `${imageUrl?.name} is selected!` : "Add profile photo"}
+              </Button>
+              <input style={{ display: "none" }} ref={fileInputRef} type="file" onChange={imgSelected}></input>
               <Button
                 color="primary"
                 className='signupBtn'

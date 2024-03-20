@@ -10,6 +10,7 @@ export interface IUser {
     lastName: string;
     refreshTokens?: string[];
     isGoogleUser?: boolean;
+    imageUrl?: string
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -43,6 +44,10 @@ const userSchema = new mongoose.Schema<IUser>({
     isGoogleUser: {
         type: Boolean,
         required: false,
+    },
+    imageUrl: {
+        type: String,
+        required: false
     }
 });
 
