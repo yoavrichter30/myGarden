@@ -7,13 +7,15 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import baseTheme from '../../theme.ts';
 import { Avatar, Card } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, ChangeEvent } from 'react';
 import "./EditProdile.css"
 import Box from '@mui/material/Box';
 import { IUser, getUserById, updateById } from '../../services/user-service.ts';
 import { register } from '../../services/user-service.ts';
 import { useNavigate } from 'react-router-dom';
 import LoadingOverlay from 'react-loading-overlay-ts';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { uploadPhoto } from '../../services/file-service.ts'
 
 
 const SignUpTheme = createTheme({
@@ -44,6 +46,9 @@ export default function EditProdile() {
   }, []);
 
   const [editMode, setEditMode] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isImgOnServer, setIsImgOnServer] = useState<boolean>(false);
   
   const [userId, setUserId] = useState('');
   const [startedRegister, setStartedRegister] = useState(false);
@@ -55,6 +60,20 @@ export default function EditProdile() {
   const [isGoogle, setIsGoogle] = useState(false);
   const [isLoadingActive, setIsLoadingActive] = useState(false);
   const [userImage, setUserImage] = useState('');
+  const [imageUrl, setImageUrl] = useState<File>();
+
+  const selectImg = () => {
+    console.log("Selecting image...")
+    fileInputRef.current?.click()
+  }
+
+  const imgSelected = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value)
+    if (e.target.files && e.target.files.length > 0) {
+        setIsImgOnServer(false);
+        setImageUrl((e.target.files)![0])
+      };
+  }
 
   const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartedRegister(true);
@@ -88,14 +107,17 @@ export default function EditProdile() {
       const data = new FormData(event.currentTarget);
         if((isGoogle && data.get('username') && data.get('firstname') && data.get('lastname')) ||
             (!isGoogle && data.get('username') && data.get('firstname') && data.get('lastname') && data.get('email'))){
+              const url = await uploadPhoto(imageUrl!);
           const changedUser: IUser = {
             ...(!isGoogle && {email: data.get('email')?.toString()}),
             ...(!isGoogle && data.get('password') && {password: data.get('password')?.toString()}),
             username: data.get('username')?.toString(),
             firstName: data.get('firstname')?.toString(),
-            lastName: data.get('lastname')?.toString()
+            lastName: data.get('lastname')?.toString(),
+            imageUrl: url
           };
           updateById(userId, changedUser).then(() => {
+            setUserImage(changedUser.imageUrl);
             setEditMode(false);
           }).finally(() => {
             setIsLoadingActive(false);
@@ -212,7 +234,23 @@ export default function EditProdile() {
                 }
                 </Grid>
               </Grid>
-              { editMode ? <Button
+              { editMode ? <>
+                    <Button
+                    color="primary"
+                    className='addPhotoBtn'
+                    fullWidth
+                    variant="outlined"
+                    sx={{ mt: 1, mb: 0 }}
+                    startIcon={<CameraAltIcon />}
+                    onClick={selectImg}
+                  >
+                    {imageUrl?.name ? `New photo ${imageUrl?.name} is selected!` : "Add profile photo"}
+                  </Button>
+                  <input style={{ display: "none" }} ref={fileInputRef} type="file" onChange={imgSelected}></input>
+                </> : <></>
+              }
+              { editMode ? 
+              <Button
                 color="primary"
                 className='signupBtn'
                 type="submit"
