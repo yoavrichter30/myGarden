@@ -39,6 +39,7 @@ export default function EditProdile() {
       setEmailInput(user.email ?? '');
       setPasswordInput('');
       setIsGoogle(user.isGoogleUser ?? false);
+      setUserImage(user.imageUrl ?? '');
     });
   }, []);
 
@@ -53,6 +54,7 @@ export default function EditProdile() {
   const [passwordInput, setPasswordInput] = useState('');
   const [isGoogle, setIsGoogle] = useState(false);
   const [isLoadingActive, setIsLoadingActive] = useState(false);
+  const [userImage, setUserImage] = useState('');
 
   const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartedRegister(true);
@@ -127,7 +129,7 @@ export default function EditProdile() {
               alignItems: 'center',
             }}
           >
-            <Avatar>{getInitials(firstNameInput, lastNameInput)}</Avatar>
+            {userImage ? <Avatar src={userImage}/> : <Avatar>{getInitials(firstNameInput, lastNameInput)}</Avatar>}
             <Typography component="h1" variant="h5">
             Gardner Card
             </Typography>
