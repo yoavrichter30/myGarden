@@ -93,6 +93,7 @@ export default init;
 if(process.env.NODE_ENV !== 'PRODUCTION'){
   init().then((app)=> http.createServer(app).listen(process.env.PORT));
 } else {
+  console.log('https configs')
   const httpOptions = {
     key: fs.readFileSync('/certs/client-key.pem'),
     cert: fs.readFileSync('/certs/client-cert.pem'),
