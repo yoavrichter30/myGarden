@@ -37,7 +37,7 @@ export default function EditProdile() {
       setLastNameInput(user.lastName ?? '');
       setUsernameInput(user.username ?? '');
       setEmailInput(user.email ?? '');
-      setPasswordInput(user.password ?? '');
+      setPasswordInput('');
       setIsGoogle(user.isGoogleUser ?? false);
     });
   }, []);
@@ -85,10 +85,10 @@ export default function EditProdile() {
       setIsLoadingActive(true);
       const data = new FormData(event.currentTarget);
         if((isGoogle && data.get('username') && data.get('firstname') && data.get('lastname')) ||
-            (!isGoogle && data.get('username') && data.get('firstname') && data.get('lastname') && data.get('email') && data.get('password'))){
+            (!isGoogle && data.get('username') && data.get('firstname') && data.get('lastname') && data.get('email'))){
           const changedUser: IUser = {
             ...(!isGoogle && {email: data.get('email')?.toString()}),
-            ...(!isGoogle && {password: data.get('password')?.toString()}),
+            ...(!isGoogle && data.get('password') && {password: data.get('password')?.toString()}),
             username: data.get('username')?.toString(),
             firstName: data.get('firstname')?.toString(),
             lastName: data.get('lastname')?.toString()
