@@ -54,6 +54,7 @@ const init = (): Promise<Express> => {
         },
         apis: [`${__dirname}/apiDoc.yml`],
       };
+      console.log(`Wanted swagger location - ${__dirname}/apiDoc.yml`)
       const specs = swaggerJsDoc(options);
       
       // Routes
