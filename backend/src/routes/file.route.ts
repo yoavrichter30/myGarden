@@ -2,7 +2,7 @@ import express from "express";
 import multer from "multer";
 
 // const base = "http://" + process.env.DOMAIN_BASE + ":" + process.env.PORT + "/";
-const base = process.env.NODE_ENV !== 'PRODUCTION' ? "http://localhost:8080/" : "http://localhost:443/";
+const base = process.env.NODE_ENV !== 'PRODUCTION' ? "http://localhost:8080/" : "https://10.10.248.182:443/";
 const filesLocation = process.env.NODE_ENV !== 'PRODUCTION' ? 'public/' : '../public'
 const router = express.Router();
 
