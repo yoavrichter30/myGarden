@@ -86,6 +86,10 @@ export default function SignIn() {
     }
   };
 
+  const handleSignup = () => {
+    navigate('/signUp');
+  }
+
   return (
     <ThemeProvider theme={SignInTheme}>
             <div  className="signincard">
@@ -158,13 +162,14 @@ export default function SignIn() {
           >
             Continue with Google
           </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/SignUp" variant="body2" underline="hover" className='signinRedirectionLink'>
-                  "Don't have an account? Sign Up"
-                </Link>
-              </Grid>
-            </Grid>
+          <Button
+            onClick={handleSignup}
+            fullWidth
+            variant="outlined"
+            sx={{ mt: 2, mb: 1 }}
+            >
+            Sign up!
+          </Button>
           </Box>
         </Box>
       </Container>
