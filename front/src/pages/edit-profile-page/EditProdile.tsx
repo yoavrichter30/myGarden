@@ -191,7 +191,10 @@ export default function EditProdile() {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    disabled={!editMode}
+                   disabled={!editMode}
+                    InputProps={{
+                      readOnly: true,
+                    }}
                     required
                     fullWidth
                     color="secondary"
@@ -219,8 +222,17 @@ export default function EditProdile() {
                   />
                 }
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  { isGoogle ? <></> :
+                <Grid item xs={12} sm={2.5}>
+                  { (isGoogle || !editMode) ? <></> :
+                  <Typography sx={{
+                    marginTop: 2,
+                  }}>
+                  Password
+                  </Typography>
+                }
+                </Grid>
+                <Grid item xs={12} sm={9.5}>
+                  { (isGoogle || !editMode) ? <></> :
                   <TextField
                     disabled={!editMode}
                     required
