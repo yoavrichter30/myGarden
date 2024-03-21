@@ -191,7 +191,10 @@ export default function EditProdile() {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    disabled={true}
+                   disabled={!editMode}
+                    InputProps={{
+                      readOnly: true,
+                    }}
                     required
                     fullWidth
                     color="secondary"

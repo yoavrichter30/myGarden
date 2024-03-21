@@ -87,7 +87,7 @@ export default function SignUp() {
     setIsLoadingActive(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (data.get('email') && data.get('password') && data.get('firstname') && data.get('lastname')){
+    if (data.get('email') && data.get('password') && data.get('firstname') && data.get('lastname') && imageUrl){
       const url = await uploadPhoto(imageUrl!);
       const newUser: IUser = {
         email: data.get('email')?.toString(),
@@ -103,7 +103,13 @@ export default function SignUp() {
         setIsLoadingActive(false);
       });
     }
+    
+    setIsLoadingActive(false);
   };
+
+  const handleSignin = () => {
+    navigate('/signIn');
+  }
 
   return (
     <ThemeProvider theme={SignUpTheme}>
@@ -229,17 +235,18 @@ export default function SignUp() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 2 }}
               >
                 Sign Up
               </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link className='signupRedirectionLink' href="/SignIn" variant="body2" underline="hover">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
+                <Button
+                  onClick={handleSignin}
+                  fullWidth
+                  variant="outlined"
+                  sx={{ mt: 2, mb: 1 }}
+                  >
+                  Already have an account? Sign in
+                </Button>
             </Box>
           </Box>
         </Container>
