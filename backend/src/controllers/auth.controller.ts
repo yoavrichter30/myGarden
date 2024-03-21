@@ -9,6 +9,7 @@ const register = async (request: Request, response: Response) => {
     const username = request.body.username;
     const email = request.body.email;
     const password = request.body.password;
+    const imageUrl = request.body.imageUrl;
 
     console.log(`${username} is trying to register with ${email}`);
 
@@ -35,7 +36,7 @@ const register = async (request: Request, response: Response) => {
     try {
         console.log(`Saving new user ${username} to the DB`);
         const user = await UserSchema.create({'username': username, 'password': encryptedPassword, 'email': email,
-                                              'firstName' : request.body.firstName, 'lastName': request.body.lastName});
+                                              'firstName' : request.body.firstName, 'lastName': request.body.lastName, 'imageUrl': imageUrl});
         return response.status(201).send(user);
     } catch (err) {
         console.error(`Error in creating new user - ${username}, \n ${err}`);

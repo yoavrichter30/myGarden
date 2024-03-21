@@ -10,6 +10,7 @@ export interface IUser {
     accessToken?: string,
     refreshToken?: string,
     isGoogleUser?: boolean,
+    imageUrl?: string
 }
 
 export const register = (user: IUser) => {
