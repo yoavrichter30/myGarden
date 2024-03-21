@@ -104,20 +104,23 @@ export default function EditProdile() {
     event.preventDefault();
     if (editMode) {
       setIsLoadingActive(true);
+      let url = '';
       const data = new FormData(event.currentTarget);
         if((isGoogle && data.get('username') && data.get('firstname') && data.get('lastname')) ||
             (!isGoogle && data.get('username') && data.get('firstname') && data.get('lastname') && data.get('email'))){
-              const url = await uploadPhoto(imageUrl!);
+              if(imageUrl){
+              url = await uploadPhoto(imageUrl!);
+            }
           const changedUser: IUser = {
             ...(!isGoogle && {email: data.get('email')?.toString()}),
             ...(!isGoogle && data.get('password') && {password: data.get('password')?.toString()}),
             username: data.get('username')?.toString(),
             firstName: data.get('firstname')?.toString(),
             lastName: data.get('lastname')?.toString(),
-            imageUrl: url
+            ...(imageUrl && {imageUrl: url})
           };
           updateById(userId, changedUser).then(() => {
-            setUserImage(changedUser.imageUrl);
+            imageUrl && setUserImage(changedUser.imageUrl);
             setEditMode(false);
           }).finally(() => {
             setIsLoadingActive(false);
